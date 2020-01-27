@@ -5,7 +5,7 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {apiResponse: "froggo"};
+    this.state = {apiResponse: ""};
 
     this.calltest = this.calltest.bind(this);
   }
@@ -15,19 +15,20 @@ class App extends Component {
   calltest() {
     fetch("http://localhost:9000/testAPI")
       .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
+      .then(res => this.setState({ apiResponse: JSON.parse(res) }))     
   }
 
   componentDidMount() {
     this.calltest();
   }
+  
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            do my api work -> {this.state.apiResponse}
+            do my api work -> {this.state.apiResponse.name}
           </p>
           <a
             className="App-link"
