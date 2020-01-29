@@ -62,18 +62,37 @@ class Output extends Component {
             person: retPerson   
         }), this.dummyFun);
       }
+
+      showPerson = () => {
+          if (this.state.person === null) {
+              return ("person not found bro");
+          }
+
+          else  {
+            const foods = this.state.person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
+            return (
+                 <div>
+                <h1>{this.state.person.name}</h1>
+                <h2>{this.state.person.age}</h2>
+                {foods}
+                </div>
+
+              );
+          }        
+      }
+
     render() {
-        const foods = this.state.person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
+        
+        
         return (
             <div>
             <form onSubmit={this.saveName}>
               <input type="text" value={this.state.nameInput} onChange = {this.handleNameChange} placeholder="name" /> <br />
               <input type="submit" value= "Find Person" />
             </form>
+            
+            {this.showPerson()}
 
-            <h1>{this.state.person.name}</h1>
-            <h2>{this.state.person.age}</h2>
-            {foods}
           </div>
         );
     }

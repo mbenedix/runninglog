@@ -8,7 +8,6 @@ var cors = require("cors");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testapiRouter = require('./routes/testapi');
-testapiRouter = testapiRouter.router;
 var findPersonRouter = require('./routes/findperson');
 var app = express();
 
