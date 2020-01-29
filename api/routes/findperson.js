@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
-
+var Person = require('./testapi');
+Person = Person.person;
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }); 
 
-
+/*
 const personSchema = new mongoose.Schema({
   name: {type: String, required: true},
   age: Number, 
@@ -13,17 +14,17 @@ const personSchema = new mongoose.Schema({
 
 
 
-const Person = mongoose.model("Person", personSchema);
+const Person = mongoose.model("Person", personSchema);*/
 
-router.get('/', function(req, res, next) {
-  Person.findOne({name: "matt benedix"}, function(err, p){
+router.post('/', function(req, res, next) {
+    let targetName = req.body.name;
+  Person.findOne({name: targetName}, function(err, p){
     console.log(p);
     res.json(p);
     if(err) throw err;
-  });
-  
+  }); 
 });
-
+/*
 router.post('/', (req, res, next) => {
  
   let reqPerson = req.body;
@@ -40,5 +41,5 @@ router.post('/', (req, res, next) => {
   })
   
 })
-module.exports.person = Person;
-module.exports.router = router;
+*/
+module.exports = router;

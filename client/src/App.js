@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <div >
-          <NavBar />
+          <NavBar /> <br/>
           <div>
             {this.props.children}
           </div>

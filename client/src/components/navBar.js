@@ -22,7 +22,7 @@ class NavBar extends Component {
           onClick={this.handleItemClick}
           href='/output'
         >
-          Output
+          Output<br/><br/>
         </Menu.Item>
 
         <Menu.Item
