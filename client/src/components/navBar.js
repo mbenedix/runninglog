@@ -49,6 +49,17 @@ class NavBar extends Component {
           Protected
         </Menu.Item>
         </li>
+
+        <li>
+        <Menu.Item
+          name='login'
+          active={activeItem === 'login'}
+          onClick={this.handleItemClick}
+          href='/login'
+        >
+          Login
+        </Menu.Item>
+        </li>
        </ul>
         
       </Menu>
