@@ -16,10 +16,6 @@ class Output extends Component {
         this.storePerson = this.storePerson.bind(this);
     }
 
-    dummyFun = () =>
-    {
-        console.log("made it!");
-    }
     handleNameChange(event) {
         this.setState({
           nameInput: event.target.value
@@ -56,11 +52,13 @@ class Output extends Component {
             console.error('Error:', error);
           });
       }
+      
       storePerson(retPerson) {
         console.log(retPerson);
         this.setState((state, props) => ({
             person: retPerson   
-        }), this.dummyFun);
+        }), () => {console.log("made it");}
+        );
       }
 
       showPerson = () => {
@@ -82,15 +80,13 @@ class Output extends Component {
       }
 
     render() {
-        
-        
         return (
             <div>
             <form onSubmit={this.saveName}>
               <input type="text" value={this.state.nameInput} onChange = {this.handleNameChange} placeholder="name" /> <br />
               <input type="submit" value= "Find Person" />
             </form>
-            
+
             {this.showPerson()}
 
           </div>

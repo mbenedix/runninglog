@@ -9,6 +9,7 @@ const Routes = () => (
         <Switch>
             <Route exact path="/output" component={Output} />
             <Route exact path="/input" component={Input} />
+            <Route component={Output} /> {/*default route (could go to 404 page)*/}
         </Switch>
     </App> )
 

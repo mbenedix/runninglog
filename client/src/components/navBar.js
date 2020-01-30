@@ -11,20 +11,24 @@ class NavBar extends Component {
     const { activeItem } = this.state
 
     return (
+
+
       <Menu stackable>
        {/* <Menu.Item>
           <img src={logo} alt="Froggo"/>
        </Menu.Item> */}
-
+        <ul>
+          <li>
         <Menu.Item
           name='output'
           active={activeItem === 'output'}
           onClick={this.handleItemClick}
           href='/output'
         >
-          Output<br/><br/>
+          Output
         </Menu.Item>
-
+        </li>
+        <li>
         <Menu.Item
           name='input'
           active={activeItem === 'input'}
@@ -33,8 +37,19 @@ class NavBar extends Component {
         >
           Input
         </Menu.Item>
+        </li>
 
-
+        <li>
+        <Menu.Item
+          name='protected'
+          active={activeItem === 'input'}
+          onClick={this.handleItemClick}
+          href='/protected'
+        >
+          Protected
+        </Menu.Item>
+        </li>
+       </ul>
         
       </Menu>
     )
