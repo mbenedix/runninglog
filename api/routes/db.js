@@ -9,8 +9,15 @@ const personSchema = new mongoose.Schema({
   favoriteFoods: [String]
 }, {versionKey: false});
 
+const userSchema = new mongoose.Schema({
+  username: {type: String, required: true},
+  password: {type: String, required: true}, 
+  email: {type: String, required: true}, 
+}, {versionKey: false});
 
 
 const Person = mongoose.model("Person", personSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports.person = Person;
+module.exports.user = User; 

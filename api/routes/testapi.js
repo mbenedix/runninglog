@@ -3,15 +3,6 @@ var router = express.Router();
 var dbs = require('./db');
 Person = dbs.person;
 
-/*
-router.get('/', function(req, res, next) {
-  Person.findOne({name: "matt benedix"}, function(err, p){
-    console.log(p);
-    res.json(p);
-    if(err) throw err;
-  });
-  
-});*/
 
 router.post('/', (req, res, next) => {
  

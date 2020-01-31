@@ -6,9 +6,10 @@ var logger = require('morgan');
 var cors = require("cors");
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var loginRouter = require('./routes/login');
 var testapiRouter = require('./routes/testapi');
 var findPersonRouter = require('./routes/findperson');
+var registerRouter = require('./routes/register');
 var app = express();
 
 // view engine setup
@@ -22,8 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/login', loginRouter);
+app.use('/register', registerRouter)
 app.use('/testapi', testapiRouter);
 app.use('/findperson', findPersonRouter);
 // catch 404 and forward to error handler

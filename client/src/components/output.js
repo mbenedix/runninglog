@@ -3,10 +3,10 @@ import React, { Component ,useRef, useState, useEffect } from 'react'
 function Output (props) {
   
   const [name, setName] = useState();
-  const [nameInput, setNameInput] = useState();
+  const [nameInput, setNameInput] = useState('');
   const [person, setPerson] = useState({favoriteFoods: []});
     
-  const firstRenderSubmit = useRef(false);
+  const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
 
   const handleNameChange = (event) => { setNameInput(event.target.value); }
   
@@ -14,6 +14,7 @@ function Output (props) {
     event.preventDefault();
     console.log(person);
     setName(nameInput);
+    setNameInput("");
     
   }
   useEffect(() => {
@@ -46,14 +47,7 @@ function Output (props) {
             console.error('Error:', error);
           });
       }
-      /*
-      storePerson(retPerson) {
-        console.log(retPerson);
-        this.setState((state, props) => ({
-            person: retPerson   
-        }), () => {console.log("made it");}
-        );
-      }*/
+
 
      const showPerson = () => {
           if(person === null) {
