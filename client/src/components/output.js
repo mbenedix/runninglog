@@ -1,39 +1,33 @@
-import React, { Component } from 'react'
+import React, { Component ,useRef, useState, useEffect } from 'react'
 
-class Output extends Component {
-    constructor(props) {
-        super(props);
+function Output (props) {
+  
+  const [name, setName] = useState();
+  const [nameInput, setNameInput] = useState();
+  const [person, setPerson] = useState({favoriteFoods: []});
+    
+  const firstRenderSubmit = useRef(false);
 
-        this.state = {
-            name: "",
-            nameInput: "",
-            person: {favoriteFoods: []}
-        };
-
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.saveName = this.saveName.bind(this);
-        this.toBackend = this.toBackend.bind(this);
-        this.storePerson = this.storePerson.bind(this);
+  const handleNameChange = (event) => { setNameInput(event.target.value); }
+  
+  const saveName = (event) => { 
+    event.preventDefault();
+    console.log(person);
+    setName(nameInput);
+    
+  }
+  useEffect(() => {
+    if (firstRenderSubmit.current){
+      toBackend()
     }
+    else {
+      firstRenderSubmit.current = true;
+    }
+  }, [name]);
 
-    handleNameChange(event) {
-        this.setState({
-          nameInput: event.target.value
-        });
-      }
-
-      saveName(event) {
-        event.preventDefault();
-        //console.log(this.state.nameInput);
-        
-        this.setState((state, props) => ({
-            name: state.nameInput,   
-        }), this.toBackend);
-        
-      }
-
-      toBackend () {
-        let targetName = this.state.name;
+  
+  const toBackend = () => {
+        let targetName = name;
         console.log(targetName);
         
         fetch('http://localhost:9000/findperson', {
@@ -46,32 +40,32 @@ class Output extends Component {
           .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
-            this.storePerson(data);
+            setPerson(data);
           })
           .catch((error) => {
             console.error('Error:', error);
           });
       }
-      
+      /*
       storePerson(retPerson) {
         console.log(retPerson);
         this.setState((state, props) => ({
             person: retPerson   
         }), () => {console.log("made it");}
         );
-      }
+      }*/
 
-      showPerson = () => {
-          if (this.state.person === null) {
-              return ("person not found bro");
+     const showPerson = () => {
+          if(person === null) {
+            return "person not found brooo"
           }
 
           else  {
-            const foods = this.state.person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
+            const foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
             return (
                  <div>
-                <h1>{this.state.person.name}</h1>
-                <h2>{this.state.person.age}</h2>
+                <h1>{person.name}</h1>
+                <h2>{person.age}</h2>
                 {foods}
                 </div>
 
@@ -79,19 +73,19 @@ class Output extends Component {
           }        
       }
 
-    render() {
+    
         return (
             <div>
-            <form onSubmit={this.saveName}>
-              <input type="text" value={this.state.nameInput} onChange = {this.handleNameChange} placeholder="name" /> <br />
+            <form onSubmit={saveName}>
+              <input type="text" value={nameInput} onChange = {handleNameChange} placeholder="name" /> <br />
               <input type="submit" value= "Find Person" />
             </form>
 
-            {this.showPerson()}
+            {showPerson()}
 
           </div>
         );
-    }
+    
 }
 
 
