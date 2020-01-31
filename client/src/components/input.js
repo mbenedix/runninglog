@@ -60,15 +60,8 @@ class Input extends Component {
             console.error('Error:', error);
           });
       }
-      /*
-      calltest() {
-        fetch("http://localhost:9000/testAPI")
-          .then(res => res.text())
-          .then(res => this.setState({ apiResponse: JSON.parse(res) }))     
-      }*/
-    
+
       componentDidMount() {
-        //this.calltest();
         return;
       }
       

@@ -1,19 +1,20 @@
 // app.js
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import NavBar from './components/navBar';
 
-class App extends Component {
-  render() {
+
+function App(props) {
+  
     return (
       <div >
           <NavBar /> <br/>
           <div>
-            {this.props.children}
-          </div>
+            {props.children}
+          </div>   
       </div>
     );
+  
   }
-}
 
 export default App;

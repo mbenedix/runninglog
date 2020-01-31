@@ -1,16 +1,17 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Menu } from 'semantic-ui-react'
 //import logo from '../logo.svg'
 
-class NavBar extends Component {
-  state = {}
+function NavBar(props){
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  const [activeItem, setActiveItem] = useState();
+  
+  const handleItemClick = (e, name) => setActiveItem(name);
+  
+  const logOut = () => {console.log("fuck me i suck");}
+  
+  return (
 
-  render() {
-    const { activeItem } = this.state
-
-    return (
 
 
       <Menu stackable>
@@ -22,7 +23,7 @@ class NavBar extends Component {
         <Menu.Item
           name='output'
           active={activeItem === 'output'}
-          onClick={this.handleItemClick}
+          onClick={handleItemClick}
           href='/output'
         >
           Output
@@ -32,7 +33,7 @@ class NavBar extends Component {
         <Menu.Item
           name='input'
           active={activeItem === 'input'}
-          onClick={this.handleItemClick}
+          onClick={handleItemClick}
           href='/input'
         >
           Input
@@ -43,28 +44,33 @@ class NavBar extends Component {
         <Menu.Item
           name='protected'
           active={activeItem === 'input'}
-          onClick={this.handleItemClick}
+          onClick={handleItemClick}
           href='/protected'
         >
           Protected
         </Menu.Item>
         </li>
+      
 
         <li>
         <Menu.Item
           name='login'
           active={activeItem === 'login'}
-          onClick={this.handleItemClick}
+          onClick={handleItemClick}
           href='/login'
         >
           Login
         </Menu.Item>
         </li>
+
+        <li>
+        <button onClick={logOut}>Log out </button>
+        </li> 
        </ul>
         
       </Menu>
     )
   }
-}
+
 
 export default NavBar
