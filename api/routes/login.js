@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const passport = require("passport");
+const LocalStrategy = require("passport-local");
+
 const bcrypt = require("bcrypt");
 
 var dbs = require('./db');
@@ -36,4 +38,8 @@ passport.authenticate('local', { failureRedirect: '/' }),
   res.redirect('/profile');
 }
 
- 
+router.post('/', (req, res, next) => {
+  res.send("dummy response");
+});
+
+module.exports = router;

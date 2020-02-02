@@ -1,49 +1,33 @@
-import React, { Component } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 
-class Input extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-          apiResponse: "",
-          inputName: "",
-          inputAge: "",
-          personToSave: {name: "", age: ""}
-      
-      };
-        
-        //this.calltest = this.calltest.bind(this);
-        this.handleAgeChange = this.handleAgeChange.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.saveperson = this.saveperson.bind(this);
-        this.toBackend = this.toBackend.bind(this);
-      }
-    
-      handleNameChange(event) {
-        this.setState({
-          inputName: event.target.value
-        });
-      }
-    
-      handleAgeChange(event) {
-        this.setState({
-          inputAge: event.target.value
-        });
-      }
-      saveperson(event) {
+function Input (props) {
+    const [apiResponse, setApiResponse] = useState("");
+    const [inputName, setInputName] = useState("");
+    const [inputAge, setInputAge] = useState("");
+    const [personToSave, setPersonToSave] = useState({ name: "", age: "" }); 
+   
+    const firstRenderSubmit = useRef(false);
+
+    const handleNameChange = (event) => { setInputName(event.target.value); }
+    const handleAgeChange = (event) => { setInputAge(event.target.value); }
+
+   
+    const savePerson = (event)  => {
         event.preventDefault();
-        console.log(this.state.inputName);
-        
-        this.setState((state, props) => ({
-          personToSave: {
-            name: state.inputName,
-            age: state.inputAge 
-          }
-        }), this.toBackend);
-        
+        setPersonToSave({ name: inputName, age: inputAge }); 
       }
+
+      useEffect(() => {
+        if (firstRenderSubmit.current){
+          toBackend()
+        }
+        else {
+          firstRenderSubmit.current = true;
+        }
+      }, [personToSave]);
     
-      toBackend () {
-        let data = this.state.personToSave;
+    const toBackend = () => {
+        let data = personToSave;
         console.log(data);
         fetch('http://localhost:9000/testapi', {
           method: 'POST', // or 'PUT'
@@ -61,21 +45,18 @@ class Input extends Component {
           });
       }
 
-      componentDidMount() {
-        return;
-      }
-      
-      render() {
-        return (
-          <div>
-            <form onSubmit={this.saveperson}>
-              <input type="text" value={this.state.inputName} onChange = {this.handleNameChange} placeholder="name" /> <br />
-              <input type="text" value={this.state.inputAge} onChange = {this.handleAgeChange} placeholder="age" /> <br />
-              <input type="submit" value="Save Person" />
-            </form>
-          </div>
+     
+     
+      return (
+        <div>
+          <form onSubmit={savePerson}>
+            <input type="text" value={inputName} onChange = {handleNameChange} placeholder="name" /> <br />
+            <input type="text" value={inputAge} onChange = {handleAgeChange} placeholder="age" /> <br />
+            <input type="submit" value="Save Person" />
+          </form>
+        </div>
         );
-      }
+      
     }
     
 
