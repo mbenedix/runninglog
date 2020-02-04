@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var dbs = require('./db');
+const bcrypt = require("bcrypt");
+
 User = dbs.user;
 
 
@@ -12,24 +14,25 @@ router.post('/', (req, res, next) => {
       email: req.body.email 
   });
 
-    User.findOne({ email: newUser.email }, function(err, user) {
-      if (err) {
-        next(err);
-      } else if (user) {
-        res.send("user already exists!")
-      } else {
-        newUser.save(err => {
-            if (err) {
-              res.send("user registration failed");
-            } else {
-              next(null, user);
-            }
-          }
-        )
-      }
-    })
-  }, () => { res.redirect('localhost:3000/login'); }
+    let foundUser = User.exists({ email: newUser.email });
 
+    if(foundUser == true) {
+      res.send("user already exists")
+    }
+
+    else {
+      newUser.save(err => {
+        if (err) {
+          res.send("user registration failed");
+        } 
+        else {
+          res.send("successful user registration");
+        }
+      });
+
+    }
+
+  }
   );
   /*
   passport.authenticate('local', { failureRedirect: '/' }),

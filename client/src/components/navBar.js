@@ -42,12 +42,12 @@ function NavBar(props){
 
         <li>
         <Menu.Item
-          name='protected'
+          name='register'
           active={activeItem === 'input'}
           onClick={handleItemClick}
-          href='/protected'
+          href='/register'
         >
-          Protected
+          Register
         </Menu.Item>
         </li>
       
