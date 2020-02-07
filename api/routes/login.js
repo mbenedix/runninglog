@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const JSRSASign = require("jsrsasign");
 
 const bcrypt = require("bcrypt");
 
