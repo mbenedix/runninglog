@@ -14,7 +14,7 @@ router.post('/', (req, res, next) => {
       email: req.body.email 
   });
 
-    let foundUser = User.exists({ email: newUser.email });
+    let foundUser = User.exists({ username: newUser.username });
 
     if(foundUser == true) {
       res.send("user already exists")

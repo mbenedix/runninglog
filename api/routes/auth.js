@@ -2,12 +2,15 @@ const JSRSASign = require("jsrsasign");
 
 const key = process.env.JWTKEY; 
 
-const generateJWT = () => {
+const generateJWT = (claims) => {
+  
+  /*
   const claims = {
     Username: "praveen",
     Age: 27,
     Fullname: "Praveen Kumar"
   }
+  */
   const key = process.env.JWTKEY; 
   const header = {
     alg: "HS512",
@@ -18,7 +21,7 @@ const generateJWT = () => {
   var sPayload = JSON.stringify(claims);
 
   const sJWT = JSRSASign.jws.JWS.sign("HS512", sHeader, sPayload, key);
-  
+  console.log("hit");
   decodeJWT(sJWT);
   return sJWT; 
 }
@@ -47,5 +50,8 @@ const decodeJWT = (token) => {
 
 
 
-exports.generateJWT = generateJWT; 
-exports.validateJWT = validateJWT;
+module.exports = {
+  generateJWT,
+  validateJWT,
+  decodeJWT
+};

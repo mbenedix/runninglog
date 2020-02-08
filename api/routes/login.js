@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const passport = require("passport");
-const LocalStrategy = require("passport-local");
+var auth = require('./auth');
+const genJWT = auth.generateJWT; 
 const JSRSASign = require("jsrsasign");
 
 const bcrypt = require("bcrypt");
@@ -9,38 +9,17 @@ const bcrypt = require("bcrypt");
 var dbs = require('./db');
 User = dbs.user;
 
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
-    
-passport.deserializeUser((id, done) => {
-  User.findOne(
-  { _id: new ObjectID(id) },
-    (err, doc) => {
-      done(null, doc);
-    }
-  );  
-});
-  
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-    console.log('User '+ username +' attempted to log in.');
-    if (err) { return done(err); }
-    if (!user) { return done(null, false); }
-    if (!bcrypt.compareSync(password, user.password)) { return done(null, false); }
-    return done(null, user);
-    });
-  }
-));
-
-passport.authenticate('local', { failureRedirect: '/' }),
-(req, res, next) => {
-  res.redirect('/profile');
-}
-
 router.post('/', (req, res, next) => {
-  res.send("dummy response");
+
+  const [username, password] = [req.body.username, req.body.password];
+  User.findOne({ username: username }, function (err, user) {
+    console.log('User '+ username +' attempted to log in.');
+    if (err) { res.send(err); return;}
+    if (!user) { res.send("username not found"); return; }
+    if (!bcrypt.compareSync(password, user.password)) { res.send ("username and password dont match"); return; }
+    
+    res.send(genJWT(username));
+    });
 });
 
 module.exports = router;
