@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
+import { useAuth } from '../context/auth';
 
 function Login (props) {
     const [apiResponse, setApiResponse] = useState("");
@@ -11,6 +12,8 @@ function Login (props) {
     }); 
    
     const firstRenderSubmit = useRef(false);
+    
+    const auth = useAuth();
 
     const handleNameChange = (event) => { setInputName(event.target.value); }
     const handlePassChange = (event) => { setinputPass(event.target.value); }
@@ -37,7 +40,15 @@ function Login (props) {
       .then((response) => response.text())
       .then((data) => {
         console.log('Success:', data);
-        setApiResponse(data);
+        if(data === "1") {
+          setApiResponse("Username not found. Please register.");
+        }
+        else if(data === "2") {
+          setApiResponse("Incorrect password. Please try again.");
+        }
+        else {
+          auth.setJWT(data);
+        }
       })
       .catch((error) => {
         console.error('Error:', error);

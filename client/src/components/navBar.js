@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import { Menu } from 'semantic-ui-react'
 //import logo from '../logo.svg'
+import { useAuth } from '../context/auth';
+
 
 function NavBar(props){
 
   const [activeItem, setActiveItem] = useState();
+  const auth = useAuth();
   
+  console.log(auth);
   const handleItemClick = (e, name) => setActiveItem(name);
   
-  const logOut = () => {console.log("fuck me i suck");}
+  const logOut = () => {
+    auth.setJWT("");
+    localStorage.clear();
+    
+  }
   
   return (
 

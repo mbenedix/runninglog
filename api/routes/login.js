@@ -15,10 +15,10 @@ router.post('/', (req, res, next) => {
   User.findOne({ username: username }, function (err, user) {
     console.log('User '+ username +' attempted to log in.');
     if (err) { res.send(err); return;}
-    if (!user) { res.send("username not found"); return; }
-    if (!bcrypt.compareSync(password, user.password)) { res.send ("incorrect password"); return; }
+    if (!user) { res.send("1"); return; } //username not found
+    if (!bcrypt.compareSync(password, user.password)) { res.send ("2"); return; } //incorrect password
     
-    res.send(genJWT(username));
+    res.send(genJWT({ username: username })); //successful 
     });
 });
 

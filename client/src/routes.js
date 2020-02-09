@@ -5,6 +5,8 @@ import Output from './components/output';
 import Input from './components/input';
 import Login from './components/login';
 import Register from './components/register';
+import NavBar from './components/navBar';
+
 import { AuthContext } from './context/auth'
 //import Protected from './components/'
 
@@ -24,6 +26,7 @@ const Routes = () => {
 return (
     <App>
         <AuthContext.Provider value={{ JWT: JWT, setJWT: setTokens  }}>
+        <NavBar /> <br/>
             <Switch>
                 <Route exact path="/output" component={Output} />
                 <Route exact path="/input" component={Input} />   

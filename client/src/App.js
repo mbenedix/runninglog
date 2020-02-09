@@ -9,7 +9,7 @@ function App(props) {
   
     return (
         <div >
-            <NavBar /> <br/>
+            
             <div>
               {props.children}
             </div>   
