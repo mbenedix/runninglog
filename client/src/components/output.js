@@ -9,7 +9,7 @@ function Output (props) {
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
 
-  const jwt = useAuth();
+  const auth = useAuth();
 
   //console.log(useContext(AuthContext));
 
@@ -46,13 +46,16 @@ function Output (props) {
           .then((response) => response.json())
           .then((data) => {
             console.log('Success:', data);
+            
             setPerson(data);
+            auth.setJWT(data.age);
           })
           .catch((error) => {
             console.error('Error:', error);
           });
       }
 
+   
 
      const showPerson = () => {
           if(person === null) {
@@ -61,10 +64,9 @@ function Output (props) {
 
           else  {
             const foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
-            
             return (
                 <div>
-                <h1>{jwt}</h1>
+                {<h1>{auth.JWT}</h1>}
                 <h1>{person.name}</h1>
                 <h2>{person.age}</h2>
                 {foods}

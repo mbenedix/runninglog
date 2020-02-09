@@ -1,4 +1,4 @@
-import React, { createContext, useContext }from 'react'
+import React, { createContext, useContext, useState }from 'react'
 import { Route, Switch } from 'react-router-dom'
 import App from './App'
 import Output from './components/output';
@@ -11,12 +11,19 @@ import { AuthContext } from './context/auth'
 
 const Routes = () => {
 
-
+    const [JWT, setJWT] = useState(localStorage.getItem('jwt') || '');
+   
+    
+    const setTokens = (data) => {
+      localStorage.setItem("jwt", JSON.stringify(data));
+      setJWT(data);
+    }
+   
 
 
 return (
     <App>
-        <AuthContext.Provider value={'eleven'}>
+        <AuthContext.Provider value={{ JWT: JWT, setJWT: setTokens  }}>
             <Switch>
                 <Route exact path="/output" component={Output} />
                 <Route exact path="/input" component={Input} />   
