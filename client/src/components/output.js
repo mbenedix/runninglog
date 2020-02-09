@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useContext } from 'react';
+import { useAuth } from '../context/auth';
 
 function Output (props) {
   
@@ -7,6 +8,10 @@ function Output (props) {
   const [person, setPerson] = useState({favoriteFoods: []});
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
+
+  const jwt = useAuth();
+
+  //console.log(useContext(AuthContext));
 
   const handleNameChange = (event) => { setNameInput(event.target.value); }
   
@@ -56,8 +61,10 @@ function Output (props) {
 
           else  {
             const foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
+            
             return (
-                 <div>
+                <div>
+                <h1>{jwt}</h1>
                 <h1>{person.name}</h1>
                 <h2>{person.age}</h2>
                 {foods}
