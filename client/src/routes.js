@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState }from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import App from './App'
 import Output from './components/output';
 import Input from './components/input';

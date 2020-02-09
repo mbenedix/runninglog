@@ -9,7 +9,6 @@ function NavBar(props){
   const [activeItem, setActiveItem] = useState();
   const auth = useAuth();
   
-  console.log(auth);
   const handleItemClick = (e, name) => setActiveItem(name);
   
   const logOut = () => {
@@ -70,11 +69,20 @@ function NavBar(props){
           Login
         </Menu.Item>
         </li>
-
         <li>
-        <button onClick={logOut}>Log out </button>
-        </li> 
+        <Menu.Item
+          name='login'
+          active={activeItem === 'logout'}
+          onClick={logOut}
+          href='/login'
+        >
+          Logout
+        </Menu.Item>
+        </li>
+        
+        
        </ul>
+       
         
       </Menu>
     )

@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
 import { useAuth } from '../context/auth';
-
+import { Redirect } from 'react-router-dom'
 function Login (props) {
     const [apiResponse, setApiResponse] = useState("");
     
     const [inputName, setInputName] = useState("");
     const [inputPass, setinputPass] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
     const [userToSave, setuserToSave] = useState({ 
       username: "", 
       password: "",
@@ -48,6 +49,7 @@ function Login (props) {
         }
         else {
           auth.setJWT(data);
+          setLoggedIn(true);
         }
       })
       .catch((error) => {
@@ -76,7 +78,13 @@ function Login (props) {
      const showresult = () => {
        return (<h1>{apiResponse}</h1>)
      }
-     
+
+     const redirect = () => 
+     {
+       if(loggedIn) {
+         return (<Redirect to='/output' />)
+       }
+     }
       return (
         <div>
           <form onSubmit={saveUser}>
@@ -84,7 +92,8 @@ function Login (props) {
             <input type="password" value={inputPass} onChange = {handlePassChange} placeholder="Password" /> <br />
             <input type="submit" value="Login" /> <br/>
 
-           { showresult()}
+          { showresult()}
+          { redirect() }
           </form>
         </div>
         );
