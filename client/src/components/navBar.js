@@ -25,63 +25,54 @@ function NavBar(props){
        {/* <Menu.Item>
           <img src={logo} alt="Froggo"/>
        </Menu.Item> */}
-        <ul>
-          <li>
+        
+         
         <Menu.Item
           name='output'
           active={activeItem === 'output'}
           onClick={handleItemClick}
           href='/output'
         >
-          Output
+         || Output |
         </Menu.Item>
-        </li>
-        <li>
+        
+        
         <Menu.Item
           name='input'
           active={activeItem === 'input'}
           onClick={handleItemClick}
           href='/input'
         >
-          Input
+          | Input | 
         </Menu.Item>
-        </li>
 
-        <li>
         <Menu.Item
           name='register'
           active={activeItem === 'input'}
           onClick={handleItemClick}
           href='/register'
         >
-          Register
+         |  Register |
         </Menu.Item>
-        </li>
-      
-
-        <li>
+        
         <Menu.Item
           name='login'
           active={activeItem === 'login'}
           onClick={handleItemClick}
           href='/login'
         >
-          Login
+         | Login |
         </Menu.Item>
-        </li>
-        <li>
+        
         <Menu.Item
           name='login'
           active={activeItem === 'logout'}
           onClick={logOut}
           href='/login'
         >
-          Logout
+         | Logout ||
         </Menu.Item>
-        </li>
         
-        
-       </ul>
        
         
       </Menu>
