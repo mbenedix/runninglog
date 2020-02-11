@@ -21,8 +21,14 @@ const generateJWT = (claims) => {
 }
 
 const validateJWT = (token) => {
+  if(!token) {
+    return false;
+  }
+  
   const algorithm = "HS512";
   const key = process.env.JWTKEY; 
+
+
   let answer = JSRSASign.jws.JWS.verifyJWT(token, key, {
     alg: [algorithm]
   });

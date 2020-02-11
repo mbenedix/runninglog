@@ -14,11 +14,10 @@ function Output (props) {
 
   //console.log(useContext(AuthContext));
 
-  const handleNameChange = (event) => { setNameInput(event.target.value); }
+  //const handleNameChange = (event) => { setNameInput(event.target.value); }
   
   const saveName = (event) => { 
     event.preventDefault();
-    console.log(person);
     setName(nameInput);
     setNameInput("");
     
@@ -91,7 +90,7 @@ function Output (props) {
         return (
             <div>
             <form onSubmit={saveName}>
-              <input type="text" value={nameInput} onChange = {handleNameChange} placeholder="name" /> <br />
+              <input type="text" value={nameInput} onChange = { (e) => setNameInput(e.target.value) } placeholder="name" /> <br />
               <input type="submit" value= "Find Person" />
             </form>
 
