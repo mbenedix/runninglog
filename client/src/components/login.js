@@ -65,16 +65,7 @@ function Login (props) {
           firstRenderSubmit.current = true;
         }
       }, [userToSave]);
-    /*
-      useEffect(() => {
-        if (firstRenderSubmit.current){
-          console.log("changed");
-        }
-        else {
-          firstRenderSubmit.current = true;
-        }
-      }, [apiResponse]);
-*/
+
      const showresult = () => {
        return (<h1>{apiResponse}</h1>)
      }
@@ -86,20 +77,20 @@ function Login (props) {
        }
      }
       return (
+        
         <div>
+          <h1>Login</h1>
           <form onSubmit={saveUser}>
             <input type="text" value={inputName} onChange = {handleNameChange} placeholder="Username" /> <br />
             <input type="password" value={inputPass} onChange = {handlePassChange} placeholder="Password" /> <br />
             <input type="submit" value="Login" /> <br/>
 
-          { showresult()}
+          { showresult() }
           { redirect() }
           </form>
         </div>
         );
       
     }
-    
-
 
 export default Login;

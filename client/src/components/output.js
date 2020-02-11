@@ -5,6 +5,7 @@ function Output (props) {
   
   const [name, setName] = useState();
   const [nameInput, setNameInput] = useState('');
+  const [resStatus, setResStatus] = useState('');
   const [person, setPerson] = useState({favoriteFoods: []});
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
@@ -40,15 +41,20 @@ function Output (props) {
           method: 'POST', // or 'PUT'
           headers: {
             'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + auth.JWT
+           //'authorization': 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.ZW1pbHk.qWMe2m_eLltq6Zjmr5hIPUgoJxUFYz_O4XOHHpEW8mKj0HUFMegqereJ1nYge0zDDKEYGnWICV6M0_g03QPYZg'
           },
           body: JSON.stringify({name: targetName}),
           })
-          .then((response) => response.json())
+          .then((response) => {
+            setResStatus(response.status);
+            return response.json()
+          })
           .then((data) => {
             console.log('Success:', data);
             
             setPerson(data);
-            auth.setJWT(data.age);
+           
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -63,7 +69,11 @@ function Output (props) {
           }
 
           else  {
-            const foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>)
+            let foods = "";
+            if(resStatus === 200) {
+              foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>);
+            }
+            
             return (
                 <div>
                 {<h1>{auth.JWT}</h1>}

@@ -4,14 +4,9 @@ const key = process.env.JWTKEY;
 
 const generateJWT = (claims) => {
   
-  /*
-  const claims = {
-    Username: "praveen",
-    Age: 27,
-    Fullname: "Praveen Kumar"
-  }
-  */
+
   const key = process.env.JWTKEY; 
+  //const key = "froggo";
   const header = {
     alg: "HS512",
     typ: "JWT"
@@ -21,7 +16,6 @@ const generateJWT = (claims) => {
   var sPayload = JSON.stringify(claims);
 
   const sJWT = JSRSASign.jws.JWS.sign("HS512", sHeader, sPayload, key);
-  console.log("hit");
   decodeJWT(sJWT);
   return sJWT; 
 }
@@ -29,10 +23,12 @@ const generateJWT = (claims) => {
 const validateJWT = (token) => {
   const algorithm = "HS512";
   const key = process.env.JWTKEY; 
-
-  return JSRSASign.jws.JWS.verifyJWT(token, key, {
+  let answer = JSRSASign.jws.JWS.verifyJWT(token, key, {
     alg: [algorithm]
   });
+  console.log(answer);
+
+  return answer;
 
 }
 
@@ -44,14 +40,25 @@ const decodeJWT = (token) => {
   const pClaim = JSRSASign.jws.JWS.readSafeJSONString(uClaim);
 
   return pClaim;
-  console.log(pHeader);
-  console.log(pClaim);
+
 }
 
+const tokenMiddle = (req, res, next) => {
+  
+  let token = req.headers.authorization.split(' ')[1];
+  if(!validateJWT(token)) {
+    return res.status(401).json({ error: "invalid token" });
+  }
 
+  else {
+    next(); 
+  }
+
+}
 
 module.exports = {
   generateJWT,
   validateJWT,
-  decodeJWT
+  decodeJWT,
+  tokenMiddle
 };

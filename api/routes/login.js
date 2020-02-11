@@ -10,7 +10,7 @@ var dbs = require('./db');
 User = dbs.user;
 
 router.post('/', (req, res, next) => {
-
+  console.log("log test");
   const [username, password] = [req.body.username, req.body.password];
   User.findOne({ username: username }, function (err, user) {
     console.log('User '+ username +' attempted to log in.');

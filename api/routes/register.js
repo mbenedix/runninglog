@@ -29,26 +29,9 @@ router.post('/', (req, res, next) => {
           res.send("successful user registration");
         }
       });
-
     }
+});
 
-  }
-  );
-  /*
-  passport.authenticate('local', { failureRedirect: '/' }),
-    (req, res, next) => {
-      res.redirect('/profile');
-    }
-    */
-  /*
- 
-  newUser.save((err, p) => {
-    if (err) return console.error(err);
-    console.log(p.name + " saved to database brooo");
-    //res.send(p.name + " saved to database brooo");
-    res.json(p);
-  })*/
-  
 
 
 module.exports = router;

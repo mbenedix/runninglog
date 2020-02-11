@@ -18,7 +18,7 @@ const Routes = () => {
    
     
     const setTokens = (data) => {
-      localStorage.setItem("jwt", JSON.stringify(data));
+      localStorage.setItem("jwt", data);
       setJWT(data);
     }
    

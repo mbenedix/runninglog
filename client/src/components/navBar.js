@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Menu } from 'semantic-ui-react'
-//import logo from '../logo.svg'
 import { useAuth } from '../context/auth';
 
 
@@ -18,14 +17,7 @@ function NavBar(props){
   }
   
   return (
-
-
-
       <Menu stackable>
-       {/* <Menu.Item>
-          <img src={logo} alt="Froggo"/>
-       </Menu.Item> */}
-        
          
         <Menu.Item
           name='output'
