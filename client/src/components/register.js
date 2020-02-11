@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 function Register (props) {
-    const [apiResponse, setApiResponse] = useState("");
+    //const [apiResponse, setApiResponse] = useState("");
     const [inputEmail, setInputEmail] = useState("");
     const [inputName, setInputName] = useState("");
     const [inputPass, setinputPass] = useState("");

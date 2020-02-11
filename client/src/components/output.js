@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/auth';
 
 function Output (props) {
@@ -23,6 +23,34 @@ function Output (props) {
     setNameInput("");
     
   }
+
+  const toBackend = useCallback(() => {
+    let targetName = name;
+    console.log(targetName);
+    
+    fetch('http://localhost:9000/findperson', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + auth.JWT
+      },
+      body: JSON.stringify({name: targetName}),
+      })
+      .then((response) => {
+        setResStatus(response.status);
+        return response.json()
+      })
+      .then((data) => {
+        console.log('Success:', data);
+        
+        setPerson(data);
+       
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, [name, auth.JWT] );
+
   useEffect(() => {
     if (firstRenderSubmit.current){
       toBackend()
@@ -30,37 +58,10 @@ function Output (props) {
     else {
       firstRenderSubmit.current = true;
     }
-  }, [name]);
+  }, [toBackend]);
 
   
-  const toBackend = () => {
-        let targetName = name;
-        console.log(targetName);
-        
-        fetch('http://localhost:9000/findperson', {
-          method: 'POST', // or 'PUT'
-          headers: {
-            'Content-Type': 'application/json',
-            'authorization': 'Bearer ' + auth.JWT
-           //'authorization': 'Bearer ' + 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.ZW1pbHk.qWMe2m_eLltq6Zjmr5hIPUgoJxUFYz_O4XOHHpEW8mKj0HUFMegqereJ1nYge0zDDKEYGnWICV6M0_g03QPYZg'
-          },
-          body: JSON.stringify({name: targetName}),
-          })
-          .then((response) => {
-            setResStatus(response.status);
-            return response.json()
-          })
-          .then((data) => {
-            console.log('Success:', data);
-            
-            setPerson(data);
-           
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-      }
-
+  
    
 
      const showPerson = () => {

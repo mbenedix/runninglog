@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 function Input (props) {
-    const [apiResponse, setApiResponse] = useState("");
+    //const [apiResponse, setApiResponse] = useState("");
     const [inputName, setInputName] = useState("");
     const [inputAge, setInputAge] = useState("");
     const [personToSave, setPersonToSave] = useState({ name: "", age: "" }); 
