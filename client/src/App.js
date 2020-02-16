@@ -6,10 +6,12 @@ import Login from './components/login';
 import Register from './components/register';
 import LogRun from './components/logrun';
 import NavBar from './components/navBar';
+import NotFound from './components/notfound';
 
 import PrivateRoute from './PrivateRoute';
 import './App.css';
 import { AuthContext } from './context/auth'
+
 
 
 const App = () => {
@@ -38,7 +40,7 @@ return (
                 <PrivateRoute exact path="/logrun" component={LogRun} />      
                 <Route exact path="/login" component={Login} /> 
                 <Route exact path="/register" component={Register} />               
-                <Route component={Output} /> {/*default route (could go to 404 page)*/}
+                <Route component={NotFound} /> {/*default route (could go to 404 page)*/}
             </Switch>
     </AuthContext.Provider>
     
