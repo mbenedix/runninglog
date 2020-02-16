@@ -17,9 +17,9 @@ const userSchema = new mongoose.Schema({
 
 const runSchema = new mongoose.Schema({
   username: {type: String, required: true},
-  date: {type: String, required: true},
-  time: {type: String, required: true}, 
-  distance: {type: String, required: true},
+  date: {type: Date, required: true},
+  time: {type: Number, required: true}, 
+  distance: {type: Number, required: true},
   runType: {type: String, required: true},
   //elevation: {type: String, required: false},
   //heartRate: {type: String, required: false} 
