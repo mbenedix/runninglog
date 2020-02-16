@@ -21,8 +21,8 @@ const runSchema = new mongoose.Schema({
   time: {type: String, required: true}, 
   distance: {type: String, required: true},
   runType: {type: String, required: true},
-  elevation: {type: String, required: false},
-  heartRate: {type: String, required: false} 
+  //elevation: {type: String, required: false},
+  //heartRate: {type: String, required: false} 
 }, {versionKey: false});
 
 

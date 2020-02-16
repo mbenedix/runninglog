@@ -10,6 +10,8 @@ var loginRouter = require('./routes/login');
 var testapiRouter = require('./routes/testapi');
 var findPersonRouter = require('./routes/findperson');
 var registerRouter = require('./routes/register');
+var saveRunRouter = require('./routes/saverun');
+var getRunsRouter = require('./routes/getruns');
 
 var auth = require('./routes/auth');
 var tokenMiddle = auth.tokenMiddle;
@@ -32,6 +34,8 @@ app.use('/login', loginRouter);
 app.use('/register', registerRouter)
 app.use('/testapi', testapiRouter);
 app.use('/findperson', tokenMiddle, findPersonRouter);
+app.use('/saverun', tokenMiddle, saveRunRouter);
+app.use('/getruns', tokenMiddle, getRunsRouter);
 
 
 // catch 404 and forward to error handler

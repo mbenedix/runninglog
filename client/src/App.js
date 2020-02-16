@@ -5,10 +5,13 @@ import Output from './components/output';
 import Input from './components/input';
 import Login from './components/login';
 import Register from './components/register';
+import LogRun from './components/logrun';
 import NavBar from './components/navBar';
+
 import PrivateRoute from './PrivateRoute';
 import './App.css';
 import { AuthContext } from './context/auth'
+
 //import Protected from './components/'
 
 
@@ -30,7 +33,8 @@ return (
         <NavBar /> <br/>
             <Switch>
                 <Route exact path="/output" component={Output} />
-                <PrivateRoute exact path="/input" component={Input} />   
+                <PrivateRoute exact path="/input" component={Input} />
+                <PrivateRoute exact path="/logrun" component={LogRun} />      
                 <Route exact path="/login" component={Login} /> 
                 <Route exact path="/register" component={Register} />               
                 <Route component={Output} /> {/*default route (could go to 404 page)*/}

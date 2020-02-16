@@ -30,12 +30,12 @@ function NavBar(props){
         
         
         <Menu.Item
-          name='input'
-          active={activeItem === 'input'}
+          name='saverun'
+          active={activeItem === 'saverun'}
           onClick={handleItemClick}
-          href='/input'
+          href='/logrun'
         >
-          | Input | 
+          | Log Run | 
         </Menu.Item>
 
         <Menu.Item
@@ -57,8 +57,8 @@ function NavBar(props){
         </Menu.Item>
         
         <Menu.Item
-          name='login'
-          active={activeItem === 'logout'}
+          name='logout'
+          active={activeItem === 'login'}
           onClick={logOut}
           href='/login'
         >

@@ -12,15 +12,18 @@ router.post('/', function(req, res, next) {
   let claims = decodeJWT(token);
   let targetName = claims.username; 
 
-  let newRun = req.body;
-  newRun.username = targetName; 
+  let data = req.body;
+  data.username = targetName; 
+  let newRun = new Run(data); 
+
+  //console.log(newRun);
 
   newRun.save(err => {
     if (err) {
-      res.send("error: run not saved");
+      res.json({ message: "error: run not saved" });
     } 
     else {
-      res.send("run saved");
+      res.json({ message: "run saved" });
     }
   });
 
