@@ -50,6 +50,7 @@ function Login (props) {
         else {
           auth.setJWT(data);
           setLoggedIn(true);
+          auth.setUser(userToSave.username);
         }
       })
       .catch((error) => {

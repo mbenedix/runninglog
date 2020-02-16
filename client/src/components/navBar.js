@@ -17,6 +17,7 @@ function NavBar(props){
   }
   
   return (
+    <div>
       <Menu stackable>
          
         <Menu.Item
@@ -64,10 +65,12 @@ function NavBar(props){
         >
          | Logout ||
         </Menu.Item>
-        
-       
-        
+  
       </Menu>
+
+      {auth.user}
+
+      </div>
     )
   }
 
