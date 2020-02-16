@@ -15,9 +15,19 @@ const userSchema = new mongoose.Schema({
   email: {type: String, required: true}, 
 }, {versionKey: false});
 
+const runSchema = new mongoose.Schema({
+  date: {type: String, required: true},
+  time: {type: String, required: true}, 
+  distance: {type: String, required: true},
+  elevation: {type: String, required: false},
+  heartRate: {type: String, required: false} 
+}, {versionKey: false});
+
 
 const Person = mongoose.model("Person", personSchema);
 const User = mongoose.model("User", userSchema);
+const Run = mongoose.model("Run", runSchema);
 
+module.exports.Run = Run;
 module.exports.person = Person;
 module.exports.user = User; 
