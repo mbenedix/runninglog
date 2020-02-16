@@ -2,7 +2,6 @@ import React, { useState }from 'react'
 import { Route, Switch } from 'react-router-dom'
 //import App from './App'
 import Output from './components/output';
-import Input from './components/input';
 import Login from './components/login';
 import Register from './components/register';
 import LogRun from './components/logrun';
@@ -33,7 +32,6 @@ return (
         <NavBar /> <br/>
             <Switch>
                 <Route exact path="/output" component={Output} />
-                <PrivateRoute exact path="/input" component={Input} />
                 <PrivateRoute exact path="/logrun" component={LogRun} />      
                 <Route exact path="/login" component={Login} /> 
                 <Route exact path="/register" component={Register} />               
