@@ -28,43 +28,46 @@ function Login (props) {
         setinputPass(""); 
     }
 
-    const toBackend = () => {
-      let data = userToSave;
-      //console.log(data);
-      fetch('http://localhost:9000/login', {
-        method: 'POST', // or 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log('Success:', data);
-        if(data === "1") {
-          setApiResponse("Username not found. Please register.");
-        }
-        else if(data === "2") {
-          setApiResponse("Incorrect password. Please try again.");
-        }
-        else {
-          auth.setJWT(data);
-          setLoggedIn(true);
-          auth.setUser(userToSave.username);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
+  
+    
    
       useEffect(() => {
-        if (firstRenderSubmit.current){
-          toBackend()
+        if (firstRenderSubmit.current) {
+          let data = userToSave;
+          //console.log(data);
+          fetch('http://localhost:9000/login', {
+            method: 'POST', // or 'PUT'
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log('Success:', data);
+            if(data === "1") {
+              setApiResponse("Username not found. Please register.");
+            }
+            else if(data === "2") {
+              setApiResponse("Incorrect password. Please try again.");
+            }
+            else {
+              auth.setJWT(data);
+              auth.setUser(userToSave.username);
+              setLoggedIn(true);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
         }
+
         else {
           firstRenderSubmit.current = true;
         }
+      /*adding auth as dependency causes bug which makes this effect fire twice
+        since the effect updates auth by design*/
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [userToSave]);
 
      const showresult = () => {

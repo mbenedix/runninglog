@@ -27,32 +27,31 @@ function LogRun (props) {
 
       useEffect(() => {
         if (firstRenderSubmit.current){
-          toBackend()
+          let data = runToSave;
+          console.log(data);
+          fetch('http://localhost:9000/saverun', {
+            method: 'POST', // or 'PUT'
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization': 'Bearer ' + auth.JWT
+            },
+            body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+              setApiResponse(data.message);
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
         }
         else {
           firstRenderSubmit.current = true;
         }
-      }, [runToSave]);
+      }, [runToSave, auth.JWT]);
     
-    const toBackend = () => {
-        let data = runToSave;
-        console.log(data);
-        fetch('http://localhost:9000/saverun', {
-          method: 'POST', // or 'PUT'
-          headers: {
-            'Content-Type': 'application/json',
-            'authorization': 'Bearer ' + auth.JWT
-          },
-          body: JSON.stringify(data),
-          })
-          .then((response) => response.json())
-          .then((data) => {
-            setApiResponse(data.message);
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
-      }
+    
+      
 
       const showResponse = () => { 
         if(apiResponse) {

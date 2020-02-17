@@ -26,28 +26,24 @@ function Register (props) {
         setinputPass(""); 
     }
 
-    const toBackend = () => {
-      let data = userToSave;
-      //console.log(data);
-      fetch('http://localhost:9000/register', {
-        method: 'POST', // or 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-    }
-   
       useEffect(() => {
         if (firstRenderSubmit.current){
-          toBackend()
+          let data = userToSave;
+      //console.log(data);
+        fetch('http://localhost:9000/register', {
+          method: 'POST', // or 'PUT'
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
         }
         else {
           firstRenderSubmit.current = true;
