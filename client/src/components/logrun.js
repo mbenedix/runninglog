@@ -57,9 +57,8 @@ function LogRun (props) {
         if(apiResponse) {
           return (<h1> {apiResponse} </h1>)
         }
-        else {
-          return "";
-        }
+        
+        return "";
       }
      
      
@@ -69,7 +68,15 @@ function LogRun (props) {
             Date: <input type="date" value={date} onChange = { (e) => setDate(e.target.value) } /> <br />
             Time: <input type="number" value={time} onChange = { (e) => setTime(e.target.value) } placeholder="Time"/> <br />
             Distance: <input type="number" value={distance} onChange = { (e) => setDistance(e.target.value) } placeholder="Distance"/> <br />
-            Run Type: <input type="text" value={runType} onChange = { (e) => setRunType(e.target.value) } placeholder="Run Type"/> <br />
+            <label>
+              Run Type: 
+              <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
+                <option value="easy">Easy</option>
+                <option value="tempo">Tempo</option>
+                <option value="long">Long</option>
+                <option value="race">Race</option>
+              </select>
+            </label>
 
             <input type="submit" value="Save Run" />
           </form>
