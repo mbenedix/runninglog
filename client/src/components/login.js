@@ -77,7 +77,7 @@ function Login (props) {
      const redirect = () => 
      {
        if(loggedIn) {
-         return (<Redirect to='/output' />)
+         return (<Redirect to='/profile' />)
        }
      }
       return (

@@ -1,20 +1,17 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/auth';
 
-function Output (props) {
+function Profile (props) {
   
   const [name, setName] = useState();
   const [nameInput, setNameInput] = useState('');
   const [resStatus, setResStatus] = useState('');
-  const [person, setPerson] = useState({favoriteFoods: []});
+  const [runs, setRuns] = useState([]);
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
 
   const auth = useAuth();
 
-  //console.log(useContext(AuthContext));
-
-  //const handleNameChange = (event) => { setNameInput(event.target.value); }
   
   const saveName = (event) => { 
     event.preventDefault();
@@ -27,7 +24,7 @@ function Output (props) {
     let targetName = name;
     console.log(targetName);
     
-    fetch('http://localhost:9000/findperson', {
+    fetch('http://localhost:9000/getruns', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
@@ -41,8 +38,8 @@ function Output (props) {
       })
       .then((data) => {
         console.log('Success:', data);
-        
-        setPerson(data);
+        setRuns(data);
+        //setPerson(data);
        
       })
       .catch((error) => {
@@ -63,23 +60,20 @@ function Output (props) {
   
    
 
-     const showPerson = () => {
-          if(person === null) {
-            return "person not found brooo"
+     const showRuns = () => {
+          if(runs === []) {
+            return "You have no runs to log"
           }
 
           else  {
-            let foods = "";
+            let runChart = [];
             if(resStatus === 200) {
-              foods = person.favoriteFoods.map((x, i) => <h3 key={i}> {x} </h3>);
+              runChart = runs.map((run, i) => <h3 key={i}> Date: {run.date} Time: {run.time} Distance: {run.distance} Run Type: {run.runType}  </h3>);
             }
             
             return (
                 <div>
-                {<h1>{auth.JWT}</h1>}
-                <h1>{person.name}</h1>
-                <h2>{person.age}</h2>
-                {foods}
+                {runChart}
                 </div>
 
               );
@@ -94,7 +88,7 @@ function Output (props) {
               <input type="submit" value= "Find Person" />
             </form>
 
-            {showPerson()}
+            {showRuns()}
 
           </div>
         );
@@ -102,4 +96,4 @@ function Output (props) {
 }
 
 
-export default Output;
+export default Profile;

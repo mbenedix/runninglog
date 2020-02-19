@@ -21,12 +21,12 @@ function NavBar(props){
       <Menu stackable>
          
         <Menu.Item
-          name='output'
-          active={activeItem === 'output'}
+          name='profile'
+          active={activeItem === 'profile'}
           onClick={handleItemClick}
-          href='/output'
+          href='/profile'
         >
-         || Output |
+         || Profile |
         </Menu.Item>
         
         

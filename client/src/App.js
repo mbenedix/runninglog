@@ -1,7 +1,7 @@
 import React, { useState }from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import Output from './components/output';
+import Profile from './components/profile';
 import Login from './components/login';
 import Register from './components/register';
 import LogRun from './components/logrun';
@@ -36,11 +36,11 @@ return (
     <AuthContext.Provider value={{ JWT: JWT, setJWT: setTokens, user: user, setUser: localSetUser }}>
         <NavBar /> <br/>
             <Switch>
-                <Route exact path="/output" component={Output} />
+                <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/logrun" component={LogRun} />      
                 <Route exact path="/login" component={Login} /> 
                 <Route exact path="/register" component={Register} />               
-                <Route component={NotFound} /> {/*default route (could go to 404 page)*/}
+                <Route component={NotFound} /> {/*default route goes to 404 page*/}
             </Switch>
     </AuthContext.Provider>
     

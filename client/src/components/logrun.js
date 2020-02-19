@@ -7,7 +7,7 @@ function LogRun (props) {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [distance, setDistance] = useState("");
-    const [runType, setRunType] = useState("");
+    const [runType, setRunType] = useState("easy");
    //const [elevation, setElevation] = useState("");
    //const [heartRate, setHeartRate] = useState("");
     const [runToSave, setRunToSave] = useState({ name: "", age: "" }); 

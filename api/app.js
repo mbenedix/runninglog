@@ -7,8 +7,6 @@ var cors = require("cors");
 const passport = require("passport");
 
 var loginRouter = require('./routes/login');
-var testapiRouter = require('./routes/testapi');
-var findPersonRouter = require('./routes/findperson');
 var registerRouter = require('./routes/register');
 var saveRunRouter = require('./routes/saverun');
 var getRunsRouter = require('./routes/getruns');
@@ -32,8 +30,6 @@ app.use(passport.initialize());
 
 app.use('/login', loginRouter);
 app.use('/register', registerRouter)
-app.use('/testapi', testapiRouter);
-app.use('/findperson', tokenMiddle, findPersonRouter);
 app.use('/saverun', tokenMiddle, saveRunRouter);
 app.use('/getruns', tokenMiddle, getRunsRouter);
 
