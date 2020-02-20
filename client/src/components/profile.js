@@ -43,10 +43,10 @@ function Profile (props) {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [sortObj, auth.JWT] );
+  }, [auth.JWT] );
 
   useEffect(() => {
-    if (firstRenderSubmit.current){
+    if (!firstRenderSubmit.current){
       toBackend()
     }
     else {
