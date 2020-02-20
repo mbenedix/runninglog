@@ -71,13 +71,41 @@ function Profile (props) {
     return runs;
   }
 
-  const convFromSecs = (runs) => {
+  const convFromSecs = (secs) => {
+    let hours = 0;
+    let mins = 0;
+    while(secs >= 3600) {
+      hours++;
+      secs -= 3600;
+    }
+
+    while(secs >= 60) {
+      mins++; 
+      secs -= 60; 
+    }
+    hours = String(hours).padStart(2,'0');
+    mins = String(mins).padStart(2,'0');
+    secs = String(secs).padStart(2,'0');
+
+    return hours + ":" + mins + ":" + secs;
 
   }
+
+  const formatNumbers = (runs) => {
+    if(runs !== undefined){
+      runs.forEach(run => { 
+        run.time = convFromSecs(run.time);
+        run.pace = convFromSecs(run.pace);
+      });
+    }
+    return runs;
+  }
+  
   
   let fullRuns = Array.from(runs); 
   fullRuns = stripTime(fullRuns);
   fullRuns = addPace(fullRuns);
+  fullRuns = formatNumbers(fullRuns);
 
      const showRuns = (runs) => {
           if (runs === ''){
