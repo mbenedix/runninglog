@@ -3,8 +3,9 @@ import { useAuth } from '../context/auth';
 
 function Profile (props) {
   
-  const [name, setName] = useState();
-  const [nameInput, setNameInput] = useState('');
+  const [sortVal, setSortVal] = useState("date");
+  const [sortDir, setSortDir] = useState("desc");
+  const [sortObj, setSortObj] = useState({val: "date", dir: "desc"});
   const [resStatus, setResStatus] = useState('');
   var [runs, setRuns] = useState('');
     
@@ -13,17 +14,14 @@ function Profile (props) {
   const auth = useAuth();
 
   
-  const saveName = (event) => { 
+  const saveForm = (event) => { 
     event.preventDefault();
-    setName(nameInput);
-    setNameInput("");
+    setSortObj({val: sortVal, dir: sortDir});
     
   }
 
   const toBackend = useCallback(() => {
-    let targetName = name;
-    console.log(targetName);
-    
+    let targetName = "doggo";    
     fetch('http://localhost:9000/getruns', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -45,7 +43,7 @@ function Profile (props) {
       .catch((error) => {
         console.error('Error:', error);
       });
-  }, [name, auth.JWT] );
+  }, [sortObj, auth.JWT] );
 
   useEffect(() => {
     if (firstRenderSubmit.current){
@@ -94,18 +92,46 @@ function Profile (props) {
   const formatNumbers = (runs) => {
     if(runs !== undefined){
       runs.forEach(run => { 
-        run.time = convFromSecs(run.time);
-        run.pace = convFromSecs(run.pace);
+        run.formTime = convFromSecs(run.time);
+        run.formPace = convFromSecs(run.pace);
       });
     }
     return runs;
   }
   
+  const sortRuns = (sortObj, runs) => { //need to make useeffects
+    switch(sortObj.val) {
+      case "date":
+        runs.sort((a,b) => (a.date > b.date) ? 1 : -1);
+        break;
+      case "time":
+        runs.sort((a,b) => (a.time > b.time) ? 1 : -1);
+        break;
+      case "distance":
+        runs.sort((a,b) => (a.distance > b.distance) ? 1 : -1);
+        break;
+      case "pace":
+        runs.sort((a,b) => (a.pace > b.pace) ? 1 : -1);
+        break;
+      default:
+        return runs;
+      
+    }
+
+    if(sortObj.dir === "desc") {
+      runs.reverse();
+    }
+
+    return runs;
+
+  }
   
   let fullRuns = Array.from(runs); 
   fullRuns = stripTime(fullRuns);
   fullRuns = addPace(fullRuns);
   fullRuns = formatNumbers(fullRuns);
+  console.log(sortObj);
+  fullRuns = sortRuns(sortObj, fullRuns);
 
      const showRuns = (runs) => {
           if (runs === ''){
@@ -120,7 +146,7 @@ function Profile (props) {
             let runChart = [];
             if(resStatus === 200) {
               
-              runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.time} Distance: {run.distance} Pace: {run.pace} Run Type: {run.runType}  </div>);
+              runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.formTime} Distance: {run.distance} Pace: {run.formPace} Run Type: {run.runType}  </div>);
             }
             
             return (
@@ -135,12 +161,22 @@ function Profile (props) {
     
         return (
             <div>
-            <form onSubmit={saveName}>
-              <input type="text" value={nameInput} onChange = { (e) => setNameInput(e.target.value) } placeholder="name" /> <br />
-              <input type="submit" value= "Find Person" />
+            <form onSubmit={saveForm}>
+              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+                
+              </select>
+              <select value={sortVal} onChange={ (e) => setSortVal(e.target.value) }>
+                <option value="date">Date</option>
+                <option value="time">Time</option>
+                <option value="distance">Distance</option>
+                <option value="pace">Pace</option>
+              </select>
+              <input type="submit" value= "Sort" />
             </form>
 
-            {showRuns(fullRuns)}
+            { showRuns(fullRuns) } 
 
           </div>
         );
