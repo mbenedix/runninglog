@@ -6,7 +6,7 @@ function Profile (props) {
   const [name, setName] = useState();
   const [nameInput, setNameInput] = useState('');
   const [resStatus, setResStatus] = useState('');
-  const [runs, setRuns] = useState([]);
+  var [runs, setRuns] = useState('');
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
 
@@ -56,19 +56,43 @@ function Profile (props) {
     }
   }, [toBackend]);
 
-  
-  
-   
+  const stripTime = (runs) => {
+    if(runs !== undefined){
+      runs.forEach(run => { run.date = run.date.split("T")[0]; });
+    }
+    return runs;
+  }
 
-     const showRuns = () => {
-          if(runs === []) {
-            return "You have no runs to log"
+  const addPace = (runs) => {
+    if(firstRenderSubmit.current){
+      runs = runs.map(run => ({...run, pace: Math.round(run.time/run.distance)}));
+    }
+  
+    return runs;
+  }
+
+  const convFromSecs = (runs) => {
+
+  }
+  
+  let fullRuns = Array.from(runs); 
+  fullRuns = stripTime(fullRuns);
+  fullRuns = addPace(fullRuns);
+
+     const showRuns = (runs) => {
+          if (runs === ''){
+            return;
           }
-
+          else if(runs.length === 0) {
+            return "You have no runs to display"
+          }
+        
           else  {
+            
             let runChart = [];
             if(resStatus === 200) {
-              runChart = runs.map((run, i) => <h3 key={i}> Date: {run.date} Time: {run.time} Distance: {run.distance} Run Type: {run.runType}  </h3>);
+              
+              runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.time} Distance: {run.distance} Pace: {run.pace} Run Type: {run.runType}  </div>);
             }
             
             return (
@@ -88,7 +112,7 @@ function Profile (props) {
               <input type="submit" value= "Find Person" />
             </form>
 
-            {showRuns()}
+            {showRuns(fullRuns)}
 
           </div>
         );
