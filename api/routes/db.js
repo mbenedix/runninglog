@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
 
 const runSchema = new mongoose.Schema({
   username: {type: String, required: true},
-  date: {type: Date, required: true},
+  date: {type: String, required: true},
   time: {type: Number, required: true}, 
   distance: {type: Number, required: true},
   runType: {type: String, required: true},

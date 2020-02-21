@@ -69,12 +69,6 @@ function Profile (props) {
     }
   }, [toBackend]);
 
-  const stripTime = (runs) => {
-    runs = Array.from(runs);
-    runs.forEach(run => { run.date = run.date.split("T")[0]; });
-
-    return runs;
-  }
 
   const addPace = (runs) => {
     runs = Array.from(runs);
@@ -235,7 +229,6 @@ function Profile (props) {
       console.log("onetime parse fire");
 
       let tempRuns = runs; 
-      tempRuns = stripTime(tempRuns);
       tempRuns = addPace(tempRuns);
       tempRuns = formatNumbers(tempRuns);
       setFullRuns(tempRuns);
