@@ -62,7 +62,7 @@ function Profile (props) {
   }
 
   const addPace = (runs) => {
-    if(firstRenderSubmit.current){
+    if(!firstRenderSubmit.current){
       runs = runs.map(run => ({...run, pace: Math.round(run.time/run.distance)}));
     }
   
