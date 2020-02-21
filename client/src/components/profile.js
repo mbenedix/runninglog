@@ -2,10 +2,22 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/auth';
 
 function Profile (props) {
-  
+  //controlled forms
   const [sortVal, setSortVal] = useState("date");
   const [sortDir, setSortDir] = useState("desc");
   const [sortObj, setSortObj] = useState({val: "date", dir: "desc"});
+  const [filterObj, setFilterObj] = useState({dateDir: "all", aDate: "", bDate: "", timeDir: "all", timeVal: "", disDir: "all", disVal: "", paceDir: "all", paceVal: ""});
+  const [dateDir, setDateDir] = useState('all');
+  const [aDate, setADate] = useState('');
+  const [bDate, setBDate] = useState('');
+  const [timeDir, setTimeDir] = useState('all');
+  const [timeVal, setTimeVal] = useState('');
+  const [disDir, setDisDir] = useState('all');
+  const [disVal, setDisVal] = useState('');
+  const [paceDir, setPaceDir] = useState('all');
+  const [paceVal, setPaceVal] = useState('');
+
+  //rest of state
   const [resStatus, setResStatus] = useState('');
   const [parseStatus, setParseStatus] = useState('');
   const [runs, setRuns] = useState('');
@@ -18,6 +30,7 @@ function Profile (props) {
   const saveForm = (event) => { 
     event.preventDefault();
     setSortObj({val: sortVal, dir: sortDir});
+    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal, disDir, disVal, paceDir, paceVal});
     
   }
 
@@ -56,18 +69,14 @@ function Profile (props) {
 
   const stripTime = (runs) => {
     runs = Array.from(runs);
+    runs.forEach(run => { run.date = run.date.split("T")[0]; });
 
-    if(runs !== undefined){
-      runs.forEach(run => { run.date = run.date.split("T")[0]; });
-    }
     return runs;
   }
 
   const addPace = (runs) => {
     runs = Array.from(runs);
-    if(!firstRenderSubmit.current){
-      runs = runs.map(run => ({...run, pace: Math.round(run.time/run.distance)}));
-    }
+    runs = runs.map(run => ({...run, pace: Math.round(run.time/run.distance)}));
   
     return runs;
   }
@@ -148,15 +157,15 @@ function Profile (props) {
       
     }
     
-  }, [auth.JWT, resStatus, runs, firstRenderSubmit]);
+  }, [auth.JWT, resStatus, runs]);
 
   useEffect(() => {
-    if (!firstRenderSubmit.current && resStatus === 200){
+    if (resStatus === 200) {
       console.log("sort fire");
       setFullRuns(sortRuns(sortObj, fullRuns));
     }
     
-  }, [sortObj, parseStatus]);
+  }, [sortObj, parseStatus, resStatus]);
 
   
   
@@ -192,22 +201,56 @@ function Profile (props) {
         return (
             <div>
             <form onSubmit={saveForm}>
-              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
-                
-              </select>
+              <h3>Sort By: </h3>
               <select value={sortVal} onChange={ (e) => setSortVal(e.target.value) }>
                 <option value="date">Date</option>
                 <option value="time">Time</option>
                 <option value="distance">Distance</option>
                 <option value="pace">Pace</option>
               </select>
-              <input type="submit" value= "Sort" />
+
+              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+                
+              </select> <br/>
+
+              <h3>Include Runs: </h3>
+              Date: 
+              <select value={dateDir} onChange={ (e) => setDateDir(e.target.value) }>
+                <option value="all">All</option>
+                <option value="bet">Between</option>
+              </select> 
+              After: <input type="date" value={aDate} onChange = { (e) => setADate(e.target.value) } /> 
+              Before: <input type="date" value={bDate} onChange = { (e) => setBDate(e.target.value) } /> 
+              <br/>
+              Time: 
+              <select value={timeDir} onChange={ (e) => setTimeDir(e.target.value) }>
+                <option value="all">All</option>
+                <option value="gt">Longer than</option>
+                <option value="lt">Less than</option>
+              </select> 
+              <input type="number" value={timeVal} onChange = { (e) => setTimeVal(e.target.value) } placeholder="Time"/> <br />
+              Distance: 
+              <select value={disDir} onChange={ (e) => setDisDir(e.target.value) }>
+                <option value="all">All</option>
+                <option value="gt">Longer than</option>
+                <option value="lt">Less than</option>
+              </select> 
+              <input type="number" value={disVal} onChange = { (e) => setDisVal(e.target.value) } placeholder="Time"/> <br />
+              Pace: 
+              <select value={paceDir} onChange={ (e) => setPaceDir(e.target.value) }>
+                <option value="all">All</option>
+                <option value="gt">Longer than</option>
+                <option value="lt">Less than</option>
+              </select> 
+              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Time"/> 
+              <br/><br/><input type="submit" value= "Submit" />
+
             </form>
-
+            <br/>
             { showRuns(fullRuns) } 
-
+            {console.log(filterObj)}
           </div>
         );
     
