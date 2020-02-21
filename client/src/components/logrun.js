@@ -5,7 +5,9 @@ import { useAuth } from '../context/auth';
 function LogRun (props) {
     const [apiResponse, setApiResponse] = useState("");
     const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+    const [mTime, setMTime] = useState(0);
+    const [hTime, setHTime] = useState(0);
+    const [time, setTime] = useState(0);
     const [distance, setDistance] = useState("");
     const [runType, setRunType] = useState("easy");
    //const [elevation, setElevation] = useState("");
@@ -18,11 +20,16 @@ function LogRun (props) {
     
     const saveRun = (e)  => {
         e.preventDefault();
-        setRunToSave({ date, time, distance, runType });
+
+        let totalTime = (hTime*3600) + (mTime*60) + (time*1);
+        console.log(typeof totalTime);
+        setRunToSave({ date, time: totalTime, distance, runType });
         setDate("");
-        setTime("");
+        setHTime(0);
+        setMTime(0);
+        setTime(0);
         setDistance("");
-        setRunType(""); 
+        setRunType("easy"); 
       }
 
       useEffect(() => {
@@ -66,8 +73,11 @@ function LogRun (props) {
         <div>
           <form onSubmit={saveRun}>
             Date: <input type="date" value={date} onChange = { (e) => setDate(e.target.value) } /> <br />
-            Time: <input type="number" value={time} onChange = { (e) => setTime(e.target.value) } placeholder="Time"/> <br />
-            Distance: <input type="number" value={distance} onChange = { (e) => setDistance(e.target.value) } placeholder="Distance"/> <br />
+            Time (hh:mm:ss): 
+            <input type="number" value={hTime} onChange = { (e) => setHTime(e.target.value) } />:
+            <input type="number" value={mTime} onChange = { (e) => setMTime(e.target.value) } />:
+            <input type="number" value={time} onChange = { (e) => setTime(e.target.value) } /> <br />
+            Distance: <input type="number" value={distance} onChange = { (e) => setDistance(e.target.value) } placeholder="Distance"/> Miles<br />
             <label>
               Run Type: 
               <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
@@ -76,7 +86,7 @@ function LogRun (props) {
                 <option value="long">Long</option>
                 <option value="race">Race</option>
               </select>
-            </label>
+            </label><br/>
 
             <input type="submit" value="Save Run" />
           </form>

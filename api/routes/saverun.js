@@ -20,6 +20,7 @@ router.post('/', function(req, res, next) {
 
   newRun.save(err => {
     if (err) {
+      console.log(err);
       res.json({ message: "error: run not saved" });
     } 
     else {
