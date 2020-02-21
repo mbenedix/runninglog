@@ -256,7 +256,8 @@ function Profile (props) {
   
 
 
-  
+  //dog.reduce((a,b) => {return (a+b.cat)}, 0)
+
      const showRuns = (runs) => {
           if (runs === ''){
             return;
@@ -268,20 +269,36 @@ function Profile (props) {
           else  {
             
             let runChart = [];
+            let totalTime, disTotalTime, totalDistance, avgPace, avgTime, avgDistance;
             if(resStatus === 200) {
-              
+              totalTime = runs.reduce((acc, run) => {return acc + run.time}, 0);
+              disTotalTime = convFromSecs(totalTime);
+              totalDistance = runs.reduce((acc, run) => {return acc + run.distance}, 0);
+              avgPace = convFromSecs(Math.round(totalTime/totalDistance));
+              avgTime = convFromSecs(Math.round(totalTime/runs.length));
+              avgDistance = (totalDistance/runs.length).toFixed(2);
+
+
               runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.formTime} Distance: {run.distance} Pace: {run.formPace} Run Type: {run.runType}  </div>);
             }
             
             return (
                 <div>
-                {runChart}
+                  <h3>Aggregate Statistics</h3>
+                  <strong>Total Time:</strong> {disTotalTime} <span/>
+                  <strong>Total Distance:</strong> {totalDistance} miles <br/>
+                  <strong>Average Time:</strong> {avgTime} <span/>
+                  <strong>Average Distance:</strong> {avgDistance} <span/>
+                  <strong>Average Pace:</strong> {avgPace} <span/>
+
+
+                  <h3>Runs</h3>
+                  {runChart}
                 </div>
 
               );
           }        
       }
-
     
         return (
             <div>
@@ -309,14 +326,14 @@ function Profile (props) {
                 <option value="gt">Longer than</option>
                 <option value="lt">Shorter than</option>
               </select> 
-              <input type="number" value={disVal} onChange = { (e) => setDisVal(e.target.value) } placeholder="Time"/> <br />
+              <input type="number" value={disVal} onChange = { (e) => setDisVal(e.target.value) } placeholder="Distance"/>mi <br />
               Pace: 
               <select value={paceDir} onChange={ (e) => setPaceDir(e.target.value) }>
                 <option value="all">All</option>
                 <option value="gt">Slower than</option>
                 <option value="lt">Faster than</option>
               </select> 
-              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Time"/> <br />
+              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Pace"/> /mi <br />
               Run Type: 
               <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
                 <option value="all">All</option>
