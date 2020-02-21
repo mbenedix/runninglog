@@ -7,10 +7,11 @@ function Profile (props) {
   const [sortDir, setSortDir] = useState("desc");
   const [sortObj, setSortObj] = useState({val: "date", dir: "desc"});
   const [resStatus, setResStatus] = useState('');
-  var [runs, setRuns] = useState('');
+  const [parseStatus, setParseStatus] = useState('');
+  const [runs, setRuns] = useState('');
+  const [fullRuns, setFullRuns] = useState('');
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
-
   const auth = useAuth();
 
   
@@ -37,8 +38,7 @@ function Profile (props) {
       .then((data) => {
         console.log('Success:', data);
         setRuns(data);
-        //setPerson(data);
-       
+        
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -55,6 +55,8 @@ function Profile (props) {
   }, [toBackend]);
 
   const stripTime = (runs) => {
+    runs = Array.from(runs);
+
     if(runs !== undefined){
       runs.forEach(run => { run.date = run.date.split("T")[0]; });
     }
@@ -62,6 +64,7 @@ function Profile (props) {
   }
 
   const addPace = (runs) => {
+    runs = Array.from(runs);
     if(!firstRenderSubmit.current){
       runs = runs.map(run => ({...run, pace: Math.round(run.time/run.distance)}));
     }
@@ -90,6 +93,7 @@ function Profile (props) {
   }
 
   const formatNumbers = (runs) => {
+    runs = Array.from(runs);
     if(runs !== undefined){
       runs.forEach(run => { 
         run.formTime = convFromSecs(run.time);
@@ -99,7 +103,9 @@ function Profile (props) {
     return runs;
   }
   
-  const sortRuns = (sortObj, runs) => { //need to make useeffects
+  const sortRuns = (sortObj, runs) => { 
+    runs = Array.from(runs);
+    
     switch(sortObj.val) {
       case "date":
         runs.sort((a,b) => (a.date > b.date) ? 1 : -1);
@@ -125,14 +131,38 @@ function Profile (props) {
     return runs;
 
   }
-  
-  let fullRuns = Array.from(runs); 
-  fullRuns = stripTime(fullRuns);
-  fullRuns = addPace(fullRuns);
-  fullRuns = formatNumbers(fullRuns);
-  console.log(sortObj);
-  fullRuns = sortRuns(sortObj, fullRuns);
 
+  
+
+  useEffect(() => {
+
+    if (runs !== "" && resStatus === 200){
+      console.log("onetime parse fire");
+
+      let tempRuns = runs; 
+      tempRuns = stripTime(tempRuns);
+      tempRuns = addPace(tempRuns);
+      tempRuns = formatNumbers(tempRuns);
+      setFullRuns(tempRuns);
+      setParseStatus(true);
+      
+    }
+    
+  }, [auth.JWT, resStatus, runs, firstRenderSubmit]);
+
+  useEffect(() => {
+    if (!firstRenderSubmit.current && resStatus === 200){
+      console.log("sort fire");
+      setFullRuns(sortRuns(sortObj, fullRuns));
+    }
+    
+  }, [sortObj, parseStatus]);
+
+  
+  
+
+
+  
      const showRuns = (runs) => {
           if (runs === ''){
             return;
