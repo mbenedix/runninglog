@@ -6,7 +6,7 @@ function Profile (props) {
   const [sortVal, setSortVal] = useState("date");
   const [sortDir, setSortDir] = useState("desc");
   const [sortObj, setSortObj] = useState({val: "date", dir: "desc"});
-  const [filterObj, setFilterObj] = useState({dateDir: "all", aDate: "", bDate: "", timeDir: "all", timeVal: "", disDir: "all", disVal: "", paceDir: "all", paceVal: ""});
+  const [filterObj, setFilterObj] = useState({dateDir: "all", aDate: "", bDate: "", timeDir: "all", timeVal: "", disDir: "all", disVal: "", paceDir: "all", paceVal: "", runType: "all"});
   const [dateDir, setDateDir] = useState('all');
   const [aDate, setADate] = useState('');
   const [bDate, setBDate] = useState('');
@@ -16,12 +16,14 @@ function Profile (props) {
   const [disVal, setDisVal] = useState('');
   const [paceDir, setPaceDir] = useState('all');
   const [paceVal, setPaceVal] = useState('');
+  const [runType, setRunType] = useState('all');
 
   //rest of state
   const [resStatus, setResStatus] = useState('');
-  const [parseStatus, setParseStatus] = useState('');
+  //const [parseStatus, setParseStatus] = useState('');
   const [runs, setRuns] = useState('');
   const [fullRuns, setFullRuns] = useState('');
+  const [displayRuns, setDisplayRuns] = useState('');
     
   const firstRenderSubmit = useRef(false); // makes useEffect not fire on first render
   const auth = useAuth();
@@ -30,7 +32,7 @@ function Profile (props) {
   const saveForm = (event) => { 
     event.preventDefault();
     setSortObj({val: sortVal, dir: sortDir});
-    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal, disDir, disVal, paceDir, paceVal});
+    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal, disDir, disVal, paceDir, paceVal, runType});
     
   }
 
@@ -141,6 +143,90 @@ function Profile (props) {
 
   }
 
+  const timeFilter = (timeDir, timeVal, runs) => {
+    if(timeDir === "gt") {
+      return runs.filter(run => run.time > timeVal);
+    }
+
+    else if(timeDir === "lt") {
+      return runs.filter(run => run.time < timeVal);
+    }
+
+    else {
+      return runs;
+    }
+  }
+
+  const distanceFilter = (disDir, disVal, runs) => {
+    if(disDir === "gt") {
+      return runs.filter(run => run.distance > disVal);
+    }
+
+    else if(disDir === "lt") {
+      return runs.filter(run => run.distance < disVal);
+    }
+
+    else {
+      return runs;
+    }
+  }
+
+  const paceFilter = (paceDir, paceVal, runs) => {
+    if(paceDir === "gt") {
+      return runs.filter(run => run.pace > paceVal);
+    }
+
+    else if(paceDir === "lt") {
+      return runs.filter(run => run.pace < paceVal);
+    }
+
+    else {
+      return runs;
+    }
+  }
+
+  const dateFilter = (dateDir, aDate, bDate, runs) => {
+    if(dateDir === "bet") {
+      if(aDate === '') {
+        aDate = "1970-01-01";
+      }
+
+      if(bDate === '') {
+        bDate = "2050-01-01";
+      }
+      return runs.filter(run => run.date > aDate && run.date < bDate);
+      
+    }
+
+    else {
+      return runs;
+    }
+
+  }
+
+  const typeFilter = (runType, runs) => {
+    if(runType !== "all") {
+      return runs.filter(run => run.runType === runType);
+    }
+
+    else {
+      return runs; 
+    }
+  }
+
+  const filterRuns = (filterObj, runs) => { 
+    runs = dateFilter(filterObj.dateDir, filterObj.aDate, filterObj.bDate, runs);
+    runs = typeFilter(filterObj.runType, runs);
+    runs = timeFilter(filterObj.timeDir, filterObj.timeVal, runs);
+    runs = distanceFilter(filterObj.disDir, filterObj.disVal, runs);
+    runs = paceFilter(filterObj.paceDir, filterObj.paceVal, runs);
+    
+    
+    return runs; 
+
+
+  }
+
   
 
   useEffect(() => {
@@ -153,7 +239,7 @@ function Profile (props) {
       tempRuns = addPace(tempRuns);
       tempRuns = formatNumbers(tempRuns);
       setFullRuns(tempRuns);
-      setParseStatus(true);
+      //setParseStatus(true);
       
     }
     
@@ -162,10 +248,16 @@ function Profile (props) {
   useEffect(() => {
     if (resStatus === 200) {
       console.log("sort fire");
-      setFullRuns(sortRuns(sortObj, fullRuns));
+
+      let tempFullRuns = fullRuns;
+      tempFullRuns = filterRuns(filterObj, tempFullRuns)
+      
+      tempFullRuns = sortRuns(sortObj, tempFullRuns);
+
+      setDisplayRuns(tempFullRuns);
     }
     
-  }, [sortObj, parseStatus, resStatus]);
+  }, [sortObj, filterObj, fullRuns, resStatus]);
 
   
   
@@ -201,19 +293,6 @@ function Profile (props) {
         return (
             <div>
             <form onSubmit={saveForm}>
-              <h3>Sort By: </h3>
-              <select value={sortVal} onChange={ (e) => setSortVal(e.target.value) }>
-                <option value="date">Date</option>
-                <option value="time">Time</option>
-                <option value="distance">Distance</option>
-                <option value="pace">Pace</option>
-              </select>
-
-              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
-                
-              </select> <br/>
 
               <h3>Include Runs: </h3>
               Date: 
@@ -228,29 +307,50 @@ function Profile (props) {
               <select value={timeDir} onChange={ (e) => setTimeDir(e.target.value) }>
                 <option value="all">All</option>
                 <option value="gt">Longer than</option>
-                <option value="lt">Less than</option>
+                <option value="lt">Shorter than</option>
               </select> 
               <input type="number" value={timeVal} onChange = { (e) => setTimeVal(e.target.value) } placeholder="Time"/> <br />
               Distance: 
               <select value={disDir} onChange={ (e) => setDisDir(e.target.value) }>
                 <option value="all">All</option>
                 <option value="gt">Longer than</option>
-                <option value="lt">Less than</option>
+                <option value="lt">Shorter than</option>
               </select> 
               <input type="number" value={disVal} onChange = { (e) => setDisVal(e.target.value) } placeholder="Time"/> <br />
               Pace: 
               <select value={paceDir} onChange={ (e) => setPaceDir(e.target.value) }>
                 <option value="all">All</option>
-                <option value="gt">Longer than</option>
-                <option value="lt">Less than</option>
+                <option value="gt">Slower than</option>
+                <option value="lt">Faster than</option>
               </select> 
-              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Time"/> 
-              <br/><br/><input type="submit" value= "Submit" />
+              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Time"/> <br />
+              Run Type: 
+              <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
+                <option value="all">All</option>
+                <option value="easy">Easy</option>
+                <option value="tempo">Tempo</option>
+                <option value="long">Long</option>
+                <option value="race">Race</option>
+              </select>
+              
+              <h3>Sort By: </h3>
+              <select value={sortVal} onChange={ (e) => setSortVal(e.target.value) }>
+                <option value="date">Date</option>
+                <option value="time">Time</option>
+                <option value="distance">Distance</option>
+                <option value="pace">Pace</option>
+              </select>
 
+              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+              </select> 
+
+              <br/><br/><input type="submit" value= "Submit" />
             </form>
             <br/>
-            { showRuns(fullRuns) } 
-            {console.log(filterObj)}
+            { showRuns(displayRuns) } 
+            
           </div>
         );
     
