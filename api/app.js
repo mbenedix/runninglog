@@ -1,24 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require("cors");
-//const passport = require("passport");
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require("cors");
+const auth = require('./routes/auth');
+const tokenMiddle = auth.tokenMiddle;
+const app = express();
 
-var loginRouter = require('./routes/login');
-var registerRouter = require('./routes/register');
-var saveRunRouter = require('./routes/saverun');
-var getRunsRouter = require('./routes/getruns');
+//routers
+const loginRouter = require('./routes/login');
+const registerRouter = require('./routes/register');
+const saveRunRouter = require('./routes/saverun');
+const getRunsRouter = require('./routes/getruns');
 
-var auth = require('./routes/auth');
-var tokenMiddle = auth.tokenMiddle;
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
+//middleware
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -26,16 +22,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(passport.initialize());
-
+//routes
 app.use('/login', loginRouter);
 app.use('/register', registerRouter)
 app.use('/saverun', tokenMiddle, saveRunRouter);
 app.use('/getruns', tokenMiddle, getRunsRouter);
 
-
 // catch 404 and forward to error handler
-
 app.use(function(req, res, next) {
   next(createError(404));
 });

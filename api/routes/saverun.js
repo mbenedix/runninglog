@@ -1,22 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var dbs = require('./db');
+const express = require('express');
+const router = express.Router();
+const dbs = require('./db');
 const Run = dbs.run;
 
-var auth = require('./auth');
+const auth = require('./auth');
 const decodeJWT = auth.decodeJWT; 
 
-
 router.post('/', function(req, res, next) {
-  let token = req.headers.authorization.split(' ')[1];
-  let claims = decodeJWT(token);
-  let targetName = claims.username; 
+  const token = req.headers.authorization.split(' ')[1];
+  const claims = decodeJWT(token);
 
   let data = req.body;
-  data.username = targetName; 
-  let newRun = new Run(data); 
-
-  //console.log(newRun);
+  data.username = claims.username; 
+  const newRun = new Run(data); 
 
   newRun.save(err => {
     if (err) {
@@ -27,7 +23,6 @@ router.post('/', function(req, res, next) {
       res.json({ message: "run saved" });
     }
   });
-
 });
 
 module.exports = router;
