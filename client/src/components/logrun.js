@@ -1,10 +1,47 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 import { useAuth } from '../context/auth';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { getMonth, getYear, getDate } from 'date-fns';
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+
+  textBox: {
+    margin: theme.spacing(1),
+    width: 100,
+  },
+  datePicker: {
+    margin: theme.spacing(1),
+    width: 150,
+  },
+}));
 
 function LogRun (props) {
     const [apiResponse, setApiResponse] = useState("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(new Date());
     const [mTime, setMTime] = useState(0);
     const [hTime, setHTime] = useState(0);
     const [time, setTime] = useState(0);
@@ -18,20 +55,25 @@ function LogRun (props) {
    
     const auth = useAuth();
     
+
+    const classes = useStyles();
+
     const saveRun = (e)  => {
         e.preventDefault();
 
         let totalTime = (hTime*3600) + (mTime*60) + (time*1);
-        console.log(typeof totalTime);
-        setRunToSave({ date, time: totalTime, distance, runType });
-        setDate("");
+        let strDate = getYear(date) + '-' + String(getMonth(date)+1).padStart(2,'0') +  '-' + String(getDate(date)).padStart(2,'0');
+        
+        setRunToSave({ date: strDate, time: totalTime, distance, runType });
+
+        setDate(new Date());
         setHTime(0);
         setMTime(0);
         setTime(0);
         setDistance("");
         setRunType("easy"); 
       }
-
+            
       useEffect(() => {
         if (firstRenderSubmit.current){
           let data = runToSave;
@@ -72,26 +114,119 @@ function LogRun (props) {
       return (
         <div>
           <form onSubmit={saveRun}>
-            Date: <input type="date" value={date} onChange = { (e) => setDate(e.target.value) } /> <br />
-            Time (hh:mm:ss): 
-            <input type="number" value={hTime} onChange = { (e) => setHTime(e.target.value) } />:
-            <input type="number" value={mTime} onChange = { (e) => setMTime(e.target.value) } />:
-            <input type="number" value={time} onChange = { (e) => setTime(e.target.value) } /> <br />
-            Distance: <input type="number" value={distance} onChange = { (e) => setDistance(e.target.value) } placeholder="Distance"/> Miles<br />
-            <label>
-              Run Type: 
-              <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
-                <option value="easy">Easy</option>
-                <option value="tempo">Tempo</option>
-                <option value="long">Long</option>
-                <option value="race">Race</option>
-              </select>
-            </label><br/>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            required
+            className={classes.datePicker}
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Date"
+            value={date}
+            onChange={ (d) => setDate(d) }
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider> <br/>
 
-            <input type="submit" value="Save Run" />
+        <TextField
+          id="hours-box"
+          required
+          className={classes.textBox}
+          label="Hours"
+          type="number"
+          size="small"
+          
+          value={hTime}
+          onChange = { (e) => setHTime(e.target.value) }
+         
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "100"}}
+          variant="outlined"
+        />           
+          <TextField
+          id="mins-box"
+          required
+          className={classes.textBox}
+          label="Mins"
+          type="number"
+          size="small"
+          
+          value={mTime}
+          onChange = { (e) => setMTime(e.target.value) }
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "59"}}
+          variant="outlined"
+        />           
+          <TextField
+          id="secs-box"
+          required
+          className={classes.textBox}
+          label="Secs"
+          type="number"
+          size="small"
+          
+          value={time}
+          onChange = { (e) => setTime(e.target.value) }
+          
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "59"}}
+          variant="outlined"
+        />   <br/>
+        <TextField
+          id="distance-box"
+          required
+          className={classes.textBox}
+          label="Distance"
+          type="number"
+          size="small"
+          
+          value={distance}
+          onChange = { (e) => setDistance(e.target.value) }
+          helperText="miles"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "0.01", min: "0", max: "100"}}
+          variant="outlined"
+        />   <br/>
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+        <InputLabel id="run-type">Run Type</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={runType}
+          onChange={ (e) => setRunType(e.target.value)}
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="easy">Easy</MenuItem>
+          <MenuItem value="tempo">Tempo</MenuItem>
+          <MenuItem value="long">Long</MenuItem>
+          <MenuItem value="race">Race</MenuItem>
+        </Select>
+      </FormControl>
+        <br/>
+        <FormControl className={classes.formControl}>
+            <Button variant="contained" color="primary" type="submit" size='small' startIcon={<SaveIcon />}>
+            Save Run
+            </Button>
+        </FormControl>
           </form>
 
           { showResponse() }
+
+          
+        
         </div>
         );
       
