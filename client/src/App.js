@@ -9,7 +9,6 @@ import NavBar from './components/navBar';
 import NotFound from './components/notfound';
 
 import PrivateRoute from './PrivateRoute';
-import './App.css';
 import { AuthContext } from './context/auth'
 
 
@@ -33,18 +32,16 @@ const App = () => {
 
 return (
     
-    <AuthContext.Provider value={{ JWT: JWT, setJWT: setTokens, user: user, setUser: localSetUser }}>
-        <NavBar /> <br/>
-            <Switch>
-                <PrivateRoute exact path="/profile" component={Profile} />
-                <PrivateRoute exact path="/logrun" component={LogRun} />      
-                <Route exact path="/login" component={Login} /> 
-                <Route exact path="/register" component={Register} />               
-                <Route component={NotFound} /> {/*default route goes to 404 page*/}
-            </Switch>
-    </AuthContext.Provider>
-    
-    
+      <AuthContext.Provider value={{ JWT: JWT, setJWT: setTokens, user: user, setUser: localSetUser }}>
+          <NavBar /> <br/>
+              <Switch>
+                  <PrivateRoute exact path="/profile" component={Profile} />
+                  <PrivateRoute exact path="/logrun" component={LogRun} />      
+                  <Route exact path="/login" component={Login} /> 
+                  <Route exact path="/register" component={Register} />               
+                  <Route component={NotFound} /> {/*default route goes to 404 page*/}
+              </Switch>
+      </AuthContext.Provider>
   );
 }
 export default App
