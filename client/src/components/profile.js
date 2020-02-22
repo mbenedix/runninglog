@@ -11,11 +11,14 @@ function Profile (props) {
   const [aDate, setADate] = useState('');
   const [bDate, setBDate] = useState('');
   const [timeDir, setTimeDir] = useState('all');
-  const [timeVal, setTimeVal] = useState('');
+  const [timeVal, setTimeVal] = useState(0);
+  const [mTimeVal, setMTimeVal] = useState(0);
+  const [hTimeVal, setHTimeVal] = useState(0);
   const [disDir, setDisDir] = useState('all');
   const [disVal, setDisVal] = useState('');
   const [paceDir, setPaceDir] = useState('all');
-  const [paceVal, setPaceVal] = useState('');
+  const [paceVal, setPaceVal] = useState(0);
+  const [mPaceVal, setMPaceVal] = useState(0);
   const [runType, setRunType] = useState('all');
 
   //rest of state
@@ -29,10 +32,14 @@ function Profile (props) {
   const auth = useAuth();
 
   
-  const saveForm = (event) => { 
-    event.preventDefault();
+  const saveForm = (e) => { 
+    e.preventDefault();
+
+    let timeSecs = convToSecs(hTimeVal, mTimeVal, timeVal);
+    let paceSecs = convToSecs(0, mPaceVal, paceVal);
+
     setSortObj({val: sortVal, dir: sortDir});
-    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal, disDir, disVal, paceDir, paceVal, runType});
+    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal: timeSecs, disDir, disVal, paceDir, paceVal: paceSecs, runType});
     
   }
 
@@ -76,7 +83,11 @@ function Profile (props) {
   
     return runs;
   }
+  const convToSecs = (h, m, s) => {
+    return (h*3600) + (m*60) + (s*1)
+  }
 
+  
   const convFromSecs = (secs) => {
     let hours = 0;
     let mins = 0;
@@ -313,13 +324,15 @@ function Profile (props) {
               After: <input type="date" value={aDate} onChange = { (e) => setADate(e.target.value) } /> 
               Before: <input type="date" value={bDate} onChange = { (e) => setBDate(e.target.value) } /> 
               <br/>
-              Time: 
+              Time (hh:mm:ss): 
               <select value={timeDir} onChange={ (e) => setTimeDir(e.target.value) }>
                 <option value="all">All</option>
                 <option value="gt">Longer than</option>
                 <option value="lt">Shorter than</option>
-              </select> 
-              <input type="number" value={timeVal} onChange = { (e) => setTimeVal(e.target.value) } placeholder="Time"/> <br />
+              </select>
+              <input type="number" style={{width: 50}} value={hTimeVal} onChange = { (e) => setHTimeVal(e.target.value) } /> 
+              <input type="number" style={{width: 50}} value={mTimeVal} onChange = { (e) => setMTimeVal(e.target.value) } />  
+              <input type="number" style={{width: 50}} value={timeVal} onChange = { (e) => setTimeVal(e.target.value) } /> <br />
               Distance: 
               <select value={disDir} onChange={ (e) => setDisDir(e.target.value) }>
                 <option value="all">All</option>
@@ -333,7 +346,8 @@ function Profile (props) {
                 <option value="gt">Slower than</option>
                 <option value="lt">Faster than</option>
               </select> 
-              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } placeholder="Pace"/> /mi <br />
+              <input type="number" value={mPaceVal} onChange = { (e) => setMPaceVal(e.target.value) } />
+              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } /> /mi <br />
               Run Type: 
               <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
                 <option value="all">All</option>
