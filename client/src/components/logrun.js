@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
+//import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,16 +26,20 @@ const useStyles = makeStyles(theme => ({
     minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
 
   textBox: {
     margin: theme.spacing(1),
     width: 100,
+    
   },
   datePicker: {
     margin: theme.spacing(1),
     width: 150,
+  },
+  text: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -113,7 +117,8 @@ function LogRun (props) {
      
       return (
         <div>
-          <form onSubmit={saveRun}>
+          <Typography variant="h4" color="primary" className={classes.text}>Log a Run</Typography>
+        <form onSubmit={saveRun}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             required
