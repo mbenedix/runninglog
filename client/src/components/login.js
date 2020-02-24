@@ -117,8 +117,6 @@ function Login (props) {
         <div>
           <Typography variant="h4" color="primary" className={classes.text}>Login</Typography>
           <form onSubmit={saveUser}>
-            {/*<input type="text" value={inputName} onChange = {handleNameChange} placeholder="Username" /> <br />
-            <input type="password" value={inputPass} onChange = {handlePassChange} placeholder="Password" /> <br />*/}
             <TextField
               id="username-box"
               required

@@ -80,7 +80,7 @@ function NavBar(){
           >
             <MenuItem component={Link} to='/profile' onClick={handleClose}>Profile</MenuItem>
             <MenuItem component={Link} to='/logrun'onClick={handleClose}>Log Run</MenuItem>
-            <MenuItem component={Link} to='/register' onClick={logOut}>Create Account</MenuItem>
+            <MenuItem component={Link} to='/register' onClick={handleClose}>Create Account</MenuItem>
             <MenuItem component={Link} to='/login' onClick={handleClose}>Login</MenuItem>
             <MenuItem component={Link} to='/login' onClick={logOut}>Logout</MenuItem>
           </Menu>
