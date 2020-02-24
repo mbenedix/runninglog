@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useAuth } from '../context/auth';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function NavBar(props){
+function NavBar(){
 
   const auth = useAuth();
   const logOut = () => {
@@ -54,7 +54,7 @@ function NavBar(props){
     else {
       return ( 
       <Typography variant="h6" className={classes.title}>
-      Welcome, {auth.user}
+        Welcome, {auth.user}
       </Typography>
      )
     }
@@ -80,6 +80,7 @@ function NavBar(props){
           >
             <MenuItem component={Link} to='/profile' onClick={handleClose}>Profile</MenuItem>
             <MenuItem component={Link} to='/logrun'onClick={handleClose}>Log Run</MenuItem>
+            <MenuItem component={Link} to='/register' onClick={logOut}>Create Account</MenuItem>
             <MenuItem component={Link} to='/login' onClick={handleClose}>Login</MenuItem>
             <MenuItem component={Link} to='/login' onClick={logOut}>Logout</MenuItem>
           </Menu>
