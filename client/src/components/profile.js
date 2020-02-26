@@ -3,7 +3,6 @@ import { useAuth } from '../context/auth';
 
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 //import FormHelperText from '@material-ui/core/FormHelperText';
@@ -354,15 +353,16 @@ function Profile (props) {
                     
               <Typography variant="h5" color="primary" align="center" className={classes.text}><strong>Aggregate Statistics</strong></Typography>
 
-              <TableContainer component={Paper}>
+              <TableContainer align="center" component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">Total Time</TableCell>
-                      <TableCell align="center">Total Distance</TableCell>
-                      <TableCell align="center">Average Time</TableCell>
-                      <TableCell align="center">Average Distance</TableCell>
-                      <TableCell align="center">Average Pace</TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Total Time</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Total Distance</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Average Time</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Average Distance</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Average Pace</strong></Typography></TableCell>
+
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -381,15 +381,15 @@ function Profile (props) {
               </TableContainer>
 
               <Typography variant="h5" color="primary" align ="center" className={classes.text}><strong>Runs</strong></Typography>
-              <TableContainer component={Paper}>
+              <TableContainer align="center" component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center">Date</TableCell>
-                      <TableCell align="center">Time</TableCell>
-                      <TableCell align="center">Distance</TableCell>
-                      <TableCell align="center">Pace</TableCell>
-                      <TableCell align="center">Run Type</TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Date</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Time</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Distance</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Pace</strong></Typography></TableCell>
+                      <TableCell align="center"><Typography variant="body1" color="primary" align ="center"><strong>Run Type</strong></Typography></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
