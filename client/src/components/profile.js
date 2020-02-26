@@ -13,6 +13,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 import {
   MuiPickersUtilsProvider,
@@ -41,6 +48,9 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     margin: theme.spacing(2),
+  },
+  table: {
+    minWidth: 100,
   },
 }));
 
@@ -274,9 +284,6 @@ function Profile (props) {
       });
 
   }, [auth.JWT]);
-
-
-  
  
 
   useEffect(() => {
@@ -314,13 +321,21 @@ function Profile (props) {
       return;
     }
     else if(runs.length === 0) {
-      return "You have no runs to display"
+      return <Typography variant="h5" color="primary" align="center" className={classes.text}><strong>You have no runs to display.</strong></Typography>
     }
         
     else  {
             
-      let runChart = [];
       let totalTime, formTotalTime, totalDistance, avgPace, avgTime, avgDistance;
+
+      const createAggData = (totalTime, totalDistance, avgTime, avgDistance, avgPace) => { 
+        return { totalTime, totalDistance, avgTime, avgDistance, avgPace };
+      };
+
+      const createRunData = (date, formTime, distance, formPace, runType) => {
+        return { date, formTime, distance, formPace, runType };
+      }
+
       if(resStatus === 200) {
         totalTime = runs.reduce((acc, run) => {return acc + run.time}, 0);
         formTotalTime = convFromSecs(totalTime);
@@ -329,24 +344,74 @@ function Profile (props) {
         avgTime = convFromSecs(Math.round(totalTime/runs.length));
         avgDistance = (totalDistance/runs.length).toFixed(2);
 
+        const aggRunChart = [createAggData(formTotalTime, totalDistance, avgTime, avgDistance, avgPace)];
 
-        runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.formTime} Distance: {run.distance} Pace: {run.formPace} Run Type: {run.runType}  </div>);
-      }
+        const runChart = runs.map((run, i) =>  createRunData(run.date, run.formTime, run.distance, run.formPace, run.runType));
+    
             
-      return (
-          <div>
-            <h3>Aggregate Statistics</h3>
-            <strong>Total Time:</strong> {formTotalTime} <span/>
-            <strong>Total Distance:</strong> {totalDistance} miles <br/>
-            <strong>Average Time:</strong> {avgTime} <span/>
-            <strong>Average Distance:</strong> {avgDistance} <span/>
-            <strong>Average Pace:</strong> {avgPace} <span/>
+        return (
+            <div>
+                    
+              <Typography variant="h5" color="primary" align="center" className={classes.text}><strong>Aggregate Statistics</strong></Typography>
 
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Total Time</TableCell>
+                      <TableCell align="center">Total Distance</TableCell>
+                      <TableCell align="center">Average Time</TableCell>
+                      <TableCell align="center">Average Distance</TableCell>
+                      <TableCell align="center">Average Pace</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {aggRunChart.map((row, i) => (
+                      <TableRow key={i}>
+                      
+                        <TableCell align="center">{row.totalTime}</TableCell>
+                        <TableCell align="center">{row.totalDistance} mi</TableCell>
+                        <TableCell align="center">{row.avgTime}</TableCell>
+                        <TableCell align="center">{row.avgDistance} mi</TableCell>
+                        <TableCell align="center">{row.avgPace}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
 
-            <h3>Runs</h3>
-            {runChart}
-          </div>
-      );
+              <Typography variant="h5" color="primary" align ="center" className={classes.text}><strong>Runs</strong></Typography>
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Date</TableCell>
+                      <TableCell align="center">Time</TableCell>
+                      <TableCell align="center">Distance</TableCell>
+                      <TableCell align="center">Pace</TableCell>
+                      <TableCell align="center">Run Type</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {runChart.map((row, i) => (
+                      <TableRow key={i}>
+                      
+                        <TableCell align="center">{row.date}</TableCell>
+                        <TableCell align="center">{row.formTime}</TableCell>
+                        <TableCell align="center">{row.distance} mi</TableCell>
+                        <TableCell align="center">{row.formPace}</TableCell>
+                        <TableCell align="center">{row.runType}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+        );
+      }
+      else {
+        return "";
+      }
     }        
   }
     
@@ -354,7 +419,7 @@ function Profile (props) {
     <div>
         
       <form onSubmit={saveForm}>
-      <Typography variant="h4" color="primary" className={classes.text}>Profile</Typography>
+      <Typography variant="h4" color="primary" align="center" className={classes.text}><strong>Profile</strong></Typography>
 
       <Typography variant="h5" color="primary" className={classes.text}>Include Runs:</Typography>
       
