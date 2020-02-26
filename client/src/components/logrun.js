@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 import {
   MuiPickersUtilsProvider,
@@ -41,6 +43,9 @@ const useStyles = makeStyles(theme => ({
   text: {
     margin: theme.spacing(1),
   },
+  box: {
+    margin: theme.spacing(2),
+  },
 }));
 
 function LogRun (props) {
@@ -49,17 +54,14 @@ function LogRun (props) {
     const [mTime, setMTime] = useState(0);
     const [hTime, setHTime] = useState(0);
     const [time, setTime] = useState(0);
-    const [distance, setDistance] = useState("");
+    const [distance, setDistance] = useState(0);
     const [runType, setRunType] = useState("easy");
-   //const [elevation, setElevation] = useState("");
-   //const [heartRate, setHeartRate] = useState("");
     const [runToSave, setRunToSave] = useState({ name: "", age: "" }); 
    
     const firstRenderSubmit = useRef(false);
    
     const auth = useAuth();
     
-
     const classes = useStyles();
 
     const saveRun = (e)  => {
@@ -116,9 +118,10 @@ function LogRun (props) {
      
      
       return (
-        <div>
-          <Typography variant="h4" color="primary" className={classes.text}>Log a Run</Typography>
-        <form onSubmit={saveRun}>
+        <Grid container alignItems="center" justify="center"direction="column">
+          <Box border={1} borderRadius={16} className={classes.box} width="50%" maxWidth={350} >
+          <Typography variant="h4" color="primary" className={classes.text} align="center"><strong>Log a Run</strong></Typography>
+        <form onSubmit={saveRun} >
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             required
@@ -221,18 +224,19 @@ function LogRun (props) {
         </Select>
       </FormControl>
         <br/>
-        <FormControl className={classes.formControl}>
+        <div align="center">
+        <FormControl className={classes.formControl} >
             <Button variant="contained" color="primary" type="submit" size='small' startIcon={<SaveIcon />}>
             Save Run
             </Button>
         </FormControl>
+        </div>
           </form>
 
-          { showResponse() }
-
           
-        
-        </div>
+        </Box>
+        { showResponse() }
+      </Grid>
         );
       
     }

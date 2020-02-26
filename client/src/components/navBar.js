@@ -53,7 +53,7 @@ function NavBar(){
 
     else {
       return ( 
-      <Typography variant="h6" className={classes.title}>
+      <Typography variant="h6" align="right" className={classes.title}>
         Welcome, {auth.user}
       </Typography>
      )

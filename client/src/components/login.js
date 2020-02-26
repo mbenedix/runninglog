@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -27,6 +30,9 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     margin: theme.spacing(1),
+  },
+  box: {
+    margin: theme.spacing(2),
   },
 }));
 
@@ -108,54 +114,55 @@ function Login (props) {
        }
      }
       return (
-        
-        <div>
-          <Typography variant="h4" color="primary" className={classes.text}>Login</Typography>
-          <form onSubmit={saveUser}>
-            <TextField
-              id="username-box"
-              required
-              className={classes.textBox}
-              label="Username"
-              type="text"
-              size="small"
-              
-              value={inputName}
-              onChange = { (e) => setInputName(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   <br/>
-            <TextField
-              id="password-box"
-              required
-              className={classes.textBox}
-              label="Password"
-              type="password"
-              size="small"
-              
-              value={inputPass}
-              onChange = { (e) => setInputPass(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   <br/>
-            <FormControl className={classes.formControl}>
-              <Button variant="contained" color="primary" type="submit" size='small' >
-                Login
-              </Button>
-            </FormControl>
+        <Grid container alignItems="center" justify="center"direction="column">
+          <Box border={1} borderRadius={16} className={classes.box} width="50%" maxWidth={350} >
+            <Typography variant="h4" color="primary" align="center" className={classes.text}><strong>Login</strong></Typography>
+            <form onSubmit={saveUser} align="center">
+              <TextField
+                id="username-box"
+                required
+                className={classes.textBox}
+                label="Username"
+                type="text"
+                size="small"
+                
+                value={inputName}
+                onChange = { (e) => setInputName(e.target.value) }
+                
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{step: "1", min: "0", max: "59"}}
+                variant="outlined"
+              />   <br/>
+              <TextField
+                id="password-box"
+                required
+                className={classes.textBox}
+                label="Password"
+                type="password"
+                size="small"
+                
+                value={inputPass}
+                onChange = { (e) => setInputPass(e.target.value) }
+                
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{step: "1", min: "0", max: "59"}}
+                variant="outlined"
+              />   <br/>
+              <FormControl className={classes.formControl}>
+                <Button variant="contained" color="primary" type="submit" size='small' >
+                  Login
+                </Button>
+              </FormControl>
 
-          { showresult() }
-          { redirect() }
-          </form>
-        </div>
+            { showresult() }
+            { redirect() }
+            </form>
+          </Box>
+        </Grid>
         );
       
     }

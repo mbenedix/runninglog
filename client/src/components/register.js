@@ -5,6 +5,9 @@ import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Box from '@material-ui/core/Box';
+import { borders } from '@material-ui/system';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -26,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     margin: theme.spacing(1),
+  },
+  box: {
+    margin: theme.spacing(2),
   },
 }));
 
@@ -103,85 +109,89 @@ function Register (props) {
      
      
       return (
-        <div>
-          <Typography variant="h4" color="primary" className={classes.text}>Create Account</Typography>
-          <form onSubmit={saveUser}>
-            <TextField
-              id="email-box"
-              required
-              className={classes.textBox}
-              label="Email"
-              type="email"
-              size="small"
-              
-              value={inputEmail}
-              onChange = { (e) => setInputEmail(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   <br/>
-            <TextField
-              id="username-box"
-              required
-              className={classes.textBox}
-              label="Username"
-              type="text"
-              size="small"
-              
-              value={inputName}
-              onChange = { (e) => setInputName(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   <br/>
-            <TextField
-              id="password-box"
-              required
-              className={classes.textBox}
-              label="Password"
-              type="password"
-              size="small"
-              
-              value={pass1}
-              onChange = { (e) => setPass1(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   {passwordsMatch(pass1, pass2)}<br/>
-                        <TextField
-              id="password-box-2"
-              required
-              className={classes.textBox}
-              label="Confirm Password"
-              type="password"
-              size="small"
-              
-              value={pass2}
-              onChange = { (e) => setPass2(e.target.value) }
-              
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{step: "1", min: "0", max: "59"}}
-              variant="outlined"
-            />   {passwordsMatch(pass1, pass2)} <br/>
-            <FormControl className={classes.formControl}>
-              <Button variant="contained" color="primary" type="submit" size='small' >
-                Create Account
-              </Button>
-            </FormControl>
-          </form>
-          {showResponse()}
-        </div>
+       
+          <Grid container alignItems="center" justify="center"direction="column">
+            <Box border={1} borderRadius={16} className={classes.box} width="50%" maxWidth={350} >
+              <Typography variant="h4" color="primary" align="center" className={classes.text}><strong>Create Account</strong></Typography>
+              <form onSubmit={saveUser} align="center">
+                <TextField
+                  id="email-box"
+                  required
+                  className={classes.textBox}
+                  label="Email"
+                  type="email"
+                  size="small"
+                  
+                  value={inputEmail}
+                  onChange = { (e) => setInputEmail(e.target.value) }
+                  
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{step: "1", min: "0", max: "59"}}
+                  variant="outlined"
+                />   <br/>
+                <TextField
+                  id="username-box"
+                  required
+                  className={classes.textBox}
+                  label="Username"
+                  type="text"
+                  size="small"
+                  
+                  value={inputName}
+                  onChange = { (e) => setInputName(e.target.value) }
+                  
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{step: "1", min: "0", max: "59"}}
+                  variant="outlined"
+                />   <br/>
+                <TextField
+                  id="password-box"
+                  required
+                  className={classes.textBox}
+                  label="Password"
+                  type="password"
+                  size="small"
+                  
+                  value={pass1}
+                  onChange = { (e) => setPass1(e.target.value) }
+                  
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{step: "1", min: "0", max: "59"}}
+                  variant="outlined"
+                />   {passwordsMatch(pass1, pass2)}<br/>
+                            <TextField
+                  id="password-box-2"
+                  required
+                  className={classes.textBox}
+                  label="Confirm Password"
+                  type="password"
+                  size="small"
+                  
+                  value={pass2}
+                  onChange = { (e) => setPass2(e.target.value) }
+                  
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{step: "1", min: "0", max: "59"}}
+                  variant="outlined"
+                />   {passwordsMatch(pass1, pass2)} <br/>
+                <FormControl className={classes.formControl}>
+                  <Button variant="contained" color="primary" type="submit" size='small' >
+                    Create Account
+                  </Button>
+                </FormControl>
+              </form>
+              {showResponse()}
+            </Box>
+          </Grid>
+      
         );    
     }
     
