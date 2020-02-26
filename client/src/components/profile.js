@@ -1,6 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/auth';
 
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+//import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import { getMonth, getYear, getDate } from 'date-fns';
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(1),
+  },
+
+  textBox: {
+    marginTop: theme.spacing(2),
+    margin: theme.spacing(1),
+    width: 100,
+    
+  },
+  datePicker: {
+    margin: theme.spacing(1),
+    width: 150,
+  },
+  text: {
+    margin: theme.spacing(2),
+  },
+}));
+
 const convToSecs = (h, m, s) => (h*3600) + (m*60) + (s*1)
 
 const addPace = (runs) => {
@@ -153,6 +196,16 @@ const filterRuns = (filterObj, runs) => {
 
 }
 
+
+
+const toStrDate = (date) => getYear(date) + '-' + String(getMonth(date)+1).padStart(2,'0') +  '-' + String(getDate(date)).padStart(2,'0');
+
+const tomorrow = new Date(); 
+tomorrow.setDate(tomorrow.getDate()+1);
+
+const begOfMonth = new Date();
+begOfMonth.setDate(0);
+
 function Profile (props) {
   //controlled forms
   const [sortVal, setSortVal] = useState("date");
@@ -160,14 +213,14 @@ function Profile (props) {
   const [sortObj, setSortObj] = useState({val: "date", dir: "desc"});
   const [filterObj, setFilterObj] = useState({dateDir: "all", aDate: "", bDate: "", timeDir: "all", timeVal: "", disDir: "all", disVal: "", paceDir: "all", paceVal: "", runType: "all"});
   const [dateDir, setDateDir] = useState('all');
-  const [aDate, setADate] = useState('');
-  const [bDate, setBDate] = useState('');
+  const [aDate, setADate] = useState(begOfMonth);
+  const [bDate, setBDate] = useState(tomorrow);
   const [timeDir, setTimeDir] = useState('all');
   const [timeVal, setTimeVal] = useState(0);
   const [mTimeVal, setMTimeVal] = useState(0);
   const [hTimeVal, setHTimeVal] = useState(0);
   const [disDir, setDisDir] = useState('all');
-  const [disVal, setDisVal] = useState('');
+  const [disVal, setDisVal] = useState(0);
   const [paceDir, setPaceDir] = useState('all');
   const [paceVal, setPaceVal] = useState(0);
   const [mPaceVal, setMPaceVal] = useState(0);
@@ -182,15 +235,19 @@ function Profile (props) {
   //const firstRender = useRef(false); // makes useEffect not fire on first render
   const auth = useAuth();
 
-  
+  const classes = useStyles();
+
   const saveForm = (e) => { 
     e.preventDefault();
 
     let timeSecs = convToSecs(hTimeVal, mTimeVal, timeVal);
     let paceSecs = convToSecs(0, mPaceVal, paceVal);
 
+    let strADate = toStrDate(aDate);
+    let strBDate = toStrDate(bDate);
+
     setSortObj({val: sortVal, dir: sortDir});
-    setFilterObj({dateDir, aDate, bDate, timeDir, timeVal: timeSecs, disDir, disVal, paceDir, paceVal: paceSecs, runType});
+    setFilterObj({dateDir, aDate: strADate, bDate: strBDate, timeDir, timeVal: timeSecs, disDir, disVal, paceDir, paceVal: paceSecs, runType});
     
   }
 
@@ -252,116 +309,321 @@ function Profile (props) {
 
   
   
-     const showRuns = (runs) => {
-          if (runs === ''){
-            return;
-          }
-          else if(runs.length === 0) {
-            return "You have no runs to display"
-          }
+  const showRuns = (runs) => {
+    if (runs === ''){
+      return;
+    }
+    else if(runs.length === 0) {
+      return "You have no runs to display"
+    }
         
-          else  {
+    else  {
             
-            let runChart = [];
-            let totalTime, formTotalTime, totalDistance, avgPace, avgTime, avgDistance;
-            if(resStatus === 200) {
-              totalTime = runs.reduce((acc, run) => {return acc + run.time}, 0);
-              formTotalTime = convFromSecs(totalTime);
-              totalDistance = runs.reduce((acc, run) => {return acc + run.distance}, 0);
-              avgPace = convFromSecs(Math.round(totalTime/totalDistance));
-              avgTime = convFromSecs(Math.round(totalTime/runs.length));
-              avgDistance = (totalDistance/runs.length).toFixed(2);
+      let runChart = [];
+      let totalTime, formTotalTime, totalDistance, avgPace, avgTime, avgDistance;
+      if(resStatus === 200) {
+        totalTime = runs.reduce((acc, run) => {return acc + run.time}, 0);
+        formTotalTime = convFromSecs(totalTime);
+        totalDistance = runs.reduce((acc, run) => {return acc + run.distance}, 0);
+        avgPace = convFromSecs(Math.round(totalTime/totalDistance));
+        avgTime = convFromSecs(Math.round(totalTime/runs.length));
+        avgDistance = (totalDistance/runs.length).toFixed(2);
 
 
-              runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.formTime} Distance: {run.distance} Pace: {run.formPace} Run Type: {run.runType}  </div>);
-            }
-            
-            return (
-                <div>
-                  <h3>Aggregate Statistics</h3>
-                  <strong>Total Time:</strong> {formTotalTime} <span/>
-                  <strong>Total Distance:</strong> {totalDistance} miles <br/>
-                  <strong>Average Time:</strong> {avgTime} <span/>
-                  <strong>Average Distance:</strong> {avgDistance} <span/>
-                  <strong>Average Pace:</strong> {avgPace} <span/>
-
-
-                  <h3>Runs</h3>
-                  {runChart}
-                </div>
-
-              );
-          }        
+        runChart = runs.map((run, i) => <div key={i}> <strong>Date:</strong> {run.date} Time: {run.formTime} Distance: {run.distance} Pace: {run.formPace} Run Type: {run.runType}  </div>);
       }
-    
-        return (
-            <div>
-              
-            <form onSubmit={saveForm}>
-
-              <h3>Include Runs: </h3>
-              Date: 
-              <select value={dateDir} onChange={ (e) => setDateDir(e.target.value) }>
-                <option value="all">All</option>
-                <option value="bet">Between</option>
-              </select> 
-              After: <input type="date" value={aDate} onChange = { (e) => setADate(e.target.value) } /> 
-              Before: <input type="date" value={bDate} onChange = { (e) => setBDate(e.target.value) } /> 
-              <br/>
-              Time (hh:mm:ss): 
-              <select value={timeDir} onChange={ (e) => setTimeDir(e.target.value) }>
-                <option value="all">All</option>
-                <option value="gt">Longer than</option>
-                <option value="lt">Shorter than</option>
-              </select>
-              <input type="number" style={{width: 50}} value={hTimeVal} onChange = { (e) => setHTimeVal(e.target.value) } /> 
-              <input type="number" style={{width: 50}} value={mTimeVal} onChange = { (e) => setMTimeVal(e.target.value) } />  
-              <input type="number" style={{width: 50}} value={timeVal} onChange = { (e) => setTimeVal(e.target.value) } /> <br />
-              Distance: 
-              <select value={disDir} onChange={ (e) => setDisDir(e.target.value) }>
-                <option value="all">All</option>
-                <option value="gt">Longer than</option>
-                <option value="lt">Shorter than</option>
-              </select> 
-              <input type="number" value={disVal} onChange = { (e) => setDisVal(e.target.value) } placeholder="Distance"/>mi <br />
-              Pace: 
-              <select value={paceDir} onChange={ (e) => setPaceDir(e.target.value) }>
-                <option value="all">All</option>
-                <option value="gt">Slower than</option>
-                <option value="lt">Faster than</option>
-              </select> 
-              <input type="number" value={mPaceVal} onChange = { (e) => setMPaceVal(e.target.value) } />
-              <input type="number" value={paceVal} onChange = { (e) => setPaceVal(e.target.value) } /> /mi <br />
-              Run Type: 
-              <select value={runType} onChange={ (e) => setRunType(e.target.value) }>
-                <option value="all">All</option>
-                <option value="easy">Easy</option>
-                <option value="tempo">Tempo</option>
-                <option value="long">Long</option>
-                <option value="race">Race</option>
-              </select>
-              
-              <h3>Sort By: </h3>
-              <select value={sortVal} onChange={ (e) => setSortVal(e.target.value) }>
-                <option value="date">Date</option>
-                <option value="time">Time</option>
-                <option value="distance">Distance</option>
-                <option value="pace">Pace</option>
-              </select>
-
-              <select value={sortDir} onChange={ (e) => setSortDir(e.target.value) }>
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
-              </select> 
-
-              <br/><br/><input type="submit" value= "Submit" />
-            </form>
-            <br/>
-            { showRuns(displayRuns) } 
             
+      return (
+          <div>
+            <h3>Aggregate Statistics</h3>
+            <strong>Total Time:</strong> {formTotalTime} <span/>
+            <strong>Total Distance:</strong> {totalDistance} miles <br/>
+            <strong>Average Time:</strong> {avgTime} <span/>
+            <strong>Average Distance:</strong> {avgDistance} <span/>
+            <strong>Average Pace:</strong> {avgPace} <span/>
+
+
+            <h3>Runs</h3>
+            {runChart}
           </div>
-        );
+      );
+    }        
+  }
     
+  return (
+    <div>
+        
+      <form onSubmit={saveForm}>
+      <Typography variant="h4" color="primary" className={classes.text}>Profile</Typography>
+
+      <Typography variant="h5" color="primary" className={classes.text}>Include Runs:</Typography>
+      
+      <FormControl variant="outlined" required className={classes.formControl} size='small'>
+        <InputLabel id="date-dir">Date</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={dateDir}
+          onChange={ (e) => setDateDir(e.target.value)}
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="bet">Between</MenuItem>
+        
+        </Select>
+        </FormControl>
+        
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            
+            className={classes.datePicker}
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="After"
+            value={aDate}
+            onChange={ (d) => setADate(d) }
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider>         
+        
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            
+            className={classes.datePicker}
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="date-picker-inline"
+            label="Before"
+            value={bDate}
+            onChange={ (d) => setBDate(d) }
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider> <br/>
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+        <InputLabel id="time-dir">Time</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={timeDir}
+          onChange={ (e) => setTimeDir(e.target.value)}
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="gt">Longer Than</MenuItem>
+          <MenuItem value="lt">Shorter Than</MenuItem>
+        
+        </Select>
+        </FormControl>      
+        
+        <TextField
+          id="hours-box"
+          required
+          className={classes.textBox}
+          label="Hours"
+          type="number"
+          size="small"
+          
+          value={hTimeVal}
+          onChange = { (e) => setHTimeVal(e.target.value) }
+        
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "100"}}
+          variant="outlined"
+        />           
+        <TextField
+          id="mins-box"
+          required
+          className={classes.textBox}
+          label="Mins"
+          type="number"
+          size="small"
+          
+          value={mTimeVal}
+          onChange = { (e) => setMTimeVal(e.target.value) }
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "59"}}
+          variant="outlined"
+        />           
+        <TextField
+          id="secs-box"
+          required
+          className={classes.textBox}
+          label="Secs"
+          type="number"
+          size="small"
+          
+          value={timeVal}
+          onChange = { (e) => setTimeVal(e.target.value) }
+          
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "1", min: "0", max: "59"}}
+          variant="outlined"
+        />   <br/>
+        
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+          <InputLabel id="dis-dir">Distance</InputLabel>
+          <Select
+            labelId="demo-simple-select-required-label"
+            id="demo-simple-select-required"
+            value={disDir}
+            onChange={ (e) => setDisDir(e.target.value)}
+            className={classes.selectEmpty}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="gt">Longer Than</MenuItem>
+            <MenuItem value="lt">Shorter Than</MenuItem>
+          
+          </Select>
+        </FormControl>
+        <TextField
+          id="dis-val"
+          required
+          className={classes.textBox}
+          label="Miles"
+          type="number"
+          size="small"
+          
+          value={disVal}
+          onChange = { (e) => setDisVal(e.target.value) }
+          
+          InputLabelProps={{
+            shrink: true,
+          }}
+          inputProps={{step: "0.01", min: "0", max: "100"}}
+          variant="outlined"
+        />  
+      <br/>
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+          <InputLabel id="pace-dir">Pace</InputLabel>
+          <Select
+            labelId="demo-simple-select-required-label"
+            id="demo-simple-select-required"
+            value={paceDir}
+            onChange={ (e) => setPaceDir(e.target.value)}
+            className={classes.selectEmpty}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="gt">Slower Than</MenuItem>
+            <MenuItem value="lt">Faster Than</MenuItem>
+          
+          </Select>
+        </FormControl>      
+        
+        <TextField
+        
+        id="pace-mins-box"
+        required
+        className={classes.textBox}
+        label="Mins"
+        type="number"
+        size="small"
+        
+        value={mPaceVal}
+        onChange = { (e) => setMPaceVal(e.target.value) }
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={{step: "1", min: "0", max: "59"}}
+        variant="outlined"
+      />           
+        <TextField
+        id="pace-secs-box"
+        required
+        className={classes.textBox}
+        label="Secs"
+        type="number"
+        size="small"
+        
+        value={paceVal}
+        onChange = { (e) => setPaceVal(e.target.value) }
+        
+        InputLabelProps={{
+          shrink: true,
+        }}
+        inputProps={{step: "1", min: "0", max: "59"}}
+        variant="outlined"
+      /> <br/>
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+          <InputLabel id="run-type">Run Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-required-label"
+            id="demo-simple-select-required"
+            value={runType}
+            onChange={ (e) => setRunType(e.target.value)}
+            className={classes.selectEmpty}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="easy">Easy</MenuItem>
+            <MenuItem value="tempo">Tempo</MenuItem>
+            <MenuItem value="long">Long</MenuItem>
+            <MenuItem value="race">Race</MenuItem>
+          </Select>
+      </FormControl>
+      
+      
+        
+        <Typography variant="h5" color="primary" className={classes.text}>Sort By:</Typography>
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+        <InputLabel id="sort-val">Sort By</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={sortVal}
+          onChange={ (e) => setSortVal(e.target.value)}
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="date">Date</MenuItem>
+          <MenuItem value="time">Time</MenuItem>
+          <MenuItem value="distance">Distance</MenuItem>
+          <MenuItem value="pace">Pace</MenuItem>
+        </Select>
+        </FormControl> 
+
+        <FormControl variant="outlined" required className={classes.formControl} size='small'>
+        <InputLabel id="sort-dir">Direction</InputLabel>
+        <Select
+          labelId="demo-simple-select-required-label"
+          id="demo-simple-select-required"
+          value={sortDir}
+          onChange={ (e) => setSortDir(e.target.value)}
+          className={classes.selectEmpty}
+        >
+          <MenuItem value="desc">Descending</MenuItem>
+          <MenuItem value="asc">Ascending</MenuItem>
+        
+        </Select>
+        </FormControl> <br/>
+
+        <FormControl className={classes.formControl}>
+          <Button variant="contained" color="primary" type="submit" size='small' >
+            Sort & Filter
+          </Button>
+        </FormControl>
+      </form>
+      <br/>
+      { showRuns(displayRuns) } 
+      
+    </div>
+  );  
 }
 
 
