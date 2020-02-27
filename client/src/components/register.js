@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Box from '@material-ui/core/Box';
-import { borders } from '@material-ui/system';
 import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles(theme => ({

@@ -6,20 +6,14 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-//import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { getMonth, getYear, getDate } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
@@ -110,7 +104,7 @@ function LogRun (props) {
 
       const showResponse = () => { 
         if(apiResponse) {
-          return (<h1> {apiResponse} </h1>)
+          return (<Typography variant="body1" color="primary" className={classes.text} align="center">{apiResponse}</Typography> )
         }
         
         return "";
