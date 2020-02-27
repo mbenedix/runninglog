@@ -19,6 +19,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 
 import {
   MuiPickersUtilsProvider,
@@ -50,6 +52,12 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: 100,
+  },
+  box: {
+    margin: theme.spacing(2),
+  },
+  chart: {
+    marginBottom: theme.spacing(3)
   },
 }));
 
@@ -349,11 +357,12 @@ function Profile (props) {
     
             
         return (
-            <div>
-                    
+            <div className={classes.chart}> 
+             
+   
               <Typography variant="h5" color="primary" align="center" className={classes.text}><strong>Aggregate Statistics</strong></Typography>
 
-              <TableContainer align="center" component={Paper}>
+              <TableContainer align="center" component={Paper} variant="outlined">
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -379,9 +388,10 @@ function Profile (props) {
                   </TableBody>
                 </Table>
               </TableContainer>
-
+             
+              
               <Typography variant="h5" color="primary" align ="center" className={classes.text}><strong>Runs</strong></Typography>
-              <TableContainer align="center" component={Paper}>
+              <TableContainer align="center" component={Paper} variant="outlined">
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -406,6 +416,7 @@ function Profile (props) {
                   </TableBody>
                 </Table>
               </TableContainer>
+            
             </div>
         );
       }
@@ -417,11 +428,13 @@ function Profile (props) {
     
   return (
     <div>
-        
+       <Typography variant="h4" color="primary" align="center" className={classes.text}><strong>Profile</strong></Typography>
+        <Grid container alignItems="center" justify="center"direction="column">
+          <Box border={1} borderRadius={16} className={classes.box} width="50%" maxWidth={600} >
       <form onSubmit={saveForm}>
-      <Typography variant="h4" color="primary" align="center" className={classes.text}><strong>Profile</strong></Typography>
-
-      <Typography variant="h5" color="primary" className={classes.text}>Include Runs:</Typography>
+     
+      
+      <Typography variant="h5" color="primary" align="center" className={classes.text}>Include Runs</Typography>
       
       <FormControl variant="outlined" required className={classes.formControl} size='small'>
         <InputLabel id="date-dir">Date</InputLabel>
@@ -645,7 +658,7 @@ function Profile (props) {
       
       
         
-        <Typography variant="h5" color="primary" className={classes.text}>Sort By:</Typography>
+        <Typography variant="h5" color="primary" align="center" className={classes.text}>Sort By</Typography>
 
         <FormControl variant="outlined" required className={classes.formControl} size='small'>
         <InputLabel id="sort-val">Sort By</InputLabel>
@@ -677,16 +690,20 @@ function Profile (props) {
         
         </Select>
         </FormControl> <br/>
-
+        
+        <div align="center">
         <FormControl className={classes.formControl}>
           <Button variant="contained" color="primary" type="submit" size='small' >
             Sort & Filter
           </Button>
         </FormControl>
+        </div>
       </form>
+      </Box>
+      
       <br/>
       { showRuns(displayRuns) } 
-      
+      </Grid>
     </div>
   );  
 }

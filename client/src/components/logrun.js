@@ -241,6 +241,4 @@ function LogRun (props) {
       
     }
     
-
-
 export default LogRun;
