@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const dbs = require('./db');
-const Run = dbs.run;
-
 const auth = require('./auth');
+
+const router = express.Router();
+const Run = dbs.run;
 const decodeJWT = auth.decodeJWT; 
 
 router.post('/', function(req, res, next) {

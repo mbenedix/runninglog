@@ -1,12 +1,11 @@
 const express = require('express');
-const router = express.Router();
 const bcrypt = require("bcrypt");
-
 const auth = require('./auth');
-const genJWT = auth.generateJWT; 
-
 const dbs = require('./db');
-User = dbs.user;
+
+const router = express.Router();
+const genJWT = auth.generateJWT; 
+const User = dbs.user;
 
 router.post('/', (req, res, next) => {
   const [username, password] = [req.body.username, req.body.password];

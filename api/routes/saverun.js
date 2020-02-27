@@ -1,9 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const dbs = require('./db');
-const Run = dbs.run;
-
 const auth = require('./auth');
+
+const router = express.Router();
+const Run = dbs.run;
 const decodeJWT = auth.decodeJWT; 
 
 router.post('/', function(req, res, next) {
@@ -17,10 +17,10 @@ router.post('/', function(req, res, next) {
   newRun.save(err => {
     if (err) {
       console.log(err);
-      res.json({ message: "error: run not saved" });
+      res.json({ message: "Error: run not saved" });
     } 
     else {
-      res.json({ message: "run saved" });
+      res.json({ message: "Run saved" });
     }
   });
 });

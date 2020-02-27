@@ -1,10 +1,9 @@
 const express = require('express');
-const router = express.Router();
 const dbs = require('./db');
 const bcrypt = require("bcrypt");
 
-User = dbs.user;
-
+const router = express.Router();
+const User = dbs.user;
 
 router.post('/', (req, res, next) => {
   const newUser = new User({ 
