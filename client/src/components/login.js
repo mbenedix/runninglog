@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../context/auth';
 import { useStyles } from '../theme';
 import { Redirect } from 'react-router-dom'

@@ -1,7 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { useAuth } from '../context/auth';
-//import { makeStyles } from '@material-ui/core/styles';
-import { useStyles } from '../theme'
+import { useStyles } from '../theme';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';

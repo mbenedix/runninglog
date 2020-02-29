@@ -1,5 +1,5 @@
-import React, { useState }from 'react'
-import { Route, Switch } from 'react-router-dom'
+import React, { useState }from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Profile from './components/profile';
 import Login from './components/login';
 import Register from './components/register';
@@ -7,7 +7,8 @@ import LogRun from './components/logrun';
 import NavBar from './components/navBar';
 import NotFound from './components/notfound';
 import PrivateRoute from './PrivateRoute';
-import { AuthContext } from './context/auth'
+import { AuthContext } from './context/auth';
+import Home from './components/home';
 
 const App = () => {
     const [JWT, setJWT] = useState(localStorage.getItem('jwt') || '');
@@ -30,7 +31,8 @@ const App = () => {
           <PrivateRoute exact path="/profile" component={ Profile } />
           <PrivateRoute exact path="/logrun" component={ LogRun } />      
           <Route exact path="/login" component={ Login } /> 
-          <Route exact path="/register" component={ Register } />               
+          <Route exact path="/register" component={ Register } />    
+          <Route exact path="/" component={ Home } />             
           <Route component={ NotFound } /> {/*default route goes to 404 page*/}
         </Switch>
     </AuthContext.Provider>
