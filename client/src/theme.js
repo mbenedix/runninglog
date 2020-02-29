@@ -51,6 +51,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   datePicker: {
+    marginLeft: theme.spacing(2),
     margin: theme.spacing(1),
     width: 150,
   },

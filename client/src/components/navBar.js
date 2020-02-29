@@ -49,7 +49,7 @@ function NavBar(){
 
   return (
     <div className={ classes.root }>
-      <AppBar position="static">
+      <AppBar color="primary" position="static">
         <Toolbar>
           <IconButton edge="start" onClick={ handleClick } className={ classes.menuButton } color="inherit" aria-label="menu">
             <MenuIcon />
