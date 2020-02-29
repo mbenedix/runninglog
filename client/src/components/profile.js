@@ -276,7 +276,7 @@ function Profile (props) {
             <TextField
               id="hours-box"
               required
-              className={ classes.profleTextBox }
+              className={ classes.profileTextBox }
               label="Hours"
               type="number"
               size="small"
@@ -290,7 +290,7 @@ function Profile (props) {
             <TextField
               id="mins-box"
               required
-              className={ classes.profleTextBox }
+              className={ classes.profileTextBox }
               label="Mins"
               type="number"
               size="small"
@@ -304,7 +304,7 @@ function Profile (props) {
             <TextField
               id="secs-box"
               required
-              className={ classes.profleTextBox }
+              className={ classes.profileTextBox }
               label="Secs"
               type="number"
               size="small"
@@ -334,7 +334,7 @@ function Profile (props) {
             <TextField
               id="dis-val"
               required
-              className={ classes.profleTextBox }
+              className={ classes.profileTextBox }
               label="Miles"
               type="number"
               size="small"
@@ -364,7 +364,7 @@ function Profile (props) {
             <TextField
               id="pace-mins-box"
               required
-              className={ classes.profleTextBox } 
+              className={ classes.profileTextBox } 
               label="Mins"
               type="number"
               size="small"
@@ -378,7 +378,7 @@ function Profile (props) {
             <TextField
               id="pace-secs-box"
               required
-              className={ classes.profleTextBox }
+              className={ classes.profileTextBox }
               label="Secs"
               type="number"
               size="small"
