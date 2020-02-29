@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAuth } from '../context/auth';
-import { makeStyles } from '@material-ui/core/styles';
+//import { makeStyles } from '@material-ui/core/styles';
+import { useStyles } from '../theme'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,27 +12,16 @@ import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
 function NavBar(){
+  const classes = useStyles();
 
   const auth = useAuth();
+
   const logOut = () => {
     auth.setJWT("");
     auth.setUser("");
     localStorage.clear();
     handleClose();
-    
   }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,56 +34,50 @@ function NavBar(){
     setAnchorEl(null);
   };
 
-  
-
   const showLogin = (user) => {
     if(auth.user === "") {
-      return (<Button component={Link} to='/login' color="inherit" >Login</Button>)
+      return (<Button component={ Link } to='/login' color="inherit" >Login</Button>)
     }
 
     else {
       return ( 
-      <Typography variant="h6" align="right" className={classes.title}>
-        Welcome, {auth.user}
+      <Typography variant="h6" align="right" className={ classes.title }>
+        Welcome, { auth.user }
       </Typography>
      )
     }
-
   }
 
-  const classes = useStyles();
-
-
   return (
-    <div className={classes.root}>
+    <div className={ classes.root }>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" onClick={handleClick} className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton edge="start" onClick={ handleClick } className={ classes.menuButton } color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Menu
             id="simple-menu"
-            anchorEl={anchorEl}
+            anchorEl={ anchorEl }
             keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+            open={ Boolean(anchorEl) }
+            onClose={ handleClose }
           >
-            <MenuItem component={Link} to='/profile' onClick={handleClose}>Profile</MenuItem>
-            <MenuItem component={Link} to='/logrun'onClick={handleClose}>Log Run</MenuItem>
-            <MenuItem component={Link} to='/register' onClick={handleClose}>Create Account</MenuItem>
-            <MenuItem component={Link} to='/login' onClick={handleClose}>Login</MenuItem>
-            <MenuItem component={Link} to='/login' onClick={logOut}>Logout</MenuItem>
+            <MenuItem component={ Link } to='/profile' onClick={ handleClose }>Profile</MenuItem>
+            <MenuItem component={ Link } to='/logrun'onClick={ handleClose }>Log Run</MenuItem>
+            <MenuItem component={ Link } to='/register' onClick={ handleClose }>Create Account</MenuItem>
+            <MenuItem component={ Link } to='/login' onClick={ handleClose }>Login</MenuItem>
+            <MenuItem component={ Link } to='/login' onClick={ logOut }>Logout</MenuItem>
           </Menu>
-          <Typography variant="h6" className={classes.title}>
+
+          <Typography variant="h6" className={ classes.title }>
             Running Log 
           </Typography>
-          {showLogin(auth.user)}
+
+          { showLogin(auth.user) }
         </Toolbar>
-      </AppBar>
-      
+      </AppBar>  
     </div>
   );
 }
-
 
 export default NavBar

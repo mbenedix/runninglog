@@ -4,6 +4,3 @@ export const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-
-
-//export function set

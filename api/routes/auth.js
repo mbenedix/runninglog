@@ -1,7 +1,7 @@
 const JSRSASign = require("jsrsasign");
 
 const generateJWT = (claims) => {
-  const key = process.env.JWTKEY; 
+  const key = process.env.JWTKEY || "AddKeyAsEnvVariablePlease"; 
   const header = {
     alg: "HS512",
     typ: "JWT"
@@ -18,7 +18,7 @@ const validateJWT = (token) => {
   }
   
   const algorithm = "HS512";
-  const key = process.env.JWTKEY; 
+  const key = process.env.JWTKEY || "AddKeyAsEnvVariablePlease"; ; 
 
   return JSRSASign.jws.JWS.verifyJWT(token, key, {
     alg: [algorithm]
