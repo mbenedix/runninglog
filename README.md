@@ -13,7 +13,7 @@ It is intended to be deployed using Docker Swarm.
 
 # Deployment with Docker Swarm
 
-##Before You Begin
+## Before You Begin
 Docker Swarm was chosen largely because it is easy to use and supports secrets management. Before you begin, you will need two secrets: 1 is a MongoDB connection URI that Mongoose will use to connect to your MongoDB instance and the other is an arbitrary key that the API server will use to generate and validate JWTs. The Mongo URI should look something like this 
 ```mongodb+srv://<username>:<password>@cluster0-rthhi.azure.mongodb.net/test?retryWrites=true&w=majority```
 
