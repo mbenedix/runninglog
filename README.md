@@ -56,7 +56,7 @@ Now we push our images to the new local registry.
 
 ## Create secrets 
 
-We will enter our secrets into Docker Swarm. This allows for secure injection of the secrets into the container at run time. Our two secrets are the MongoDB URI and the JWT key. These secrets will be injected into the container in the /run/secrets/ directory where the API server will read them from a file.  
+We will enter our secrets into Docker Swarm. This allows for secure injection of the secrets into the backend container at run time. Our two secrets are the MongoDB URI and the JWT key. These secrets will be injected into the backend container in the /run/secrets/ directory where the API server will read them from a file.  
 
 ```echo '<your mongodb uri>' | docker secret create mongo_uri -```
 
