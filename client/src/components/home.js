@@ -25,7 +25,7 @@ function Home () {
           <br/>
           The frontend is built with React with hooks. The backend API server is built with Node and Express. 
           Data storage is accomplished with MongoDB and Mongoose. Authentication is done with JSON Web Tokens.
-          It is intended to be deployed using Docker.   
+          It is intended to be deployed using Docker Swarm.   
         </Typography>
       </Box>
     </Grid>
