@@ -42,7 +42,7 @@ For the purposes of this tutorial, we will be tagging to push to a registry runn
 
 ## Create local registry and push to it
 
-We will create a local registry on our Swarm and then push our new images onto it. This is necessary in order to use Docker Stacks. 
+We will create a local registry on our Swarm and then push our new images onto it. Having your images in a registry is necessary in order to use Docker Stacks, but it doesn't have to be local. 
 
 ```docker service create --name registry --publish mode=host,published=5000,target=5000 registry:2```
 
@@ -84,7 +84,7 @@ You should now be able to go to http://localhost and view the app. If this is yo
 
 ## Troubleshooting 
 
-There are a lot of places where things could go wrong and I only tested this on Ubuntu 19.10 with Docker installed from the Docker repo. I will highlight a few areas that I believe are the largest friction points. 
+There are a lot of places where things could go wrong and I have only tested this on Ubuntu 19.10 and Ubuntu 18.04LTS with Docker installed from the Docker repo. I will highlight a few areas that I believe are the largest friction points. 
 
 ### Docker Stack deployment stuck at 0/1 replicas for each service
 
