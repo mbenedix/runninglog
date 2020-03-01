@@ -1,1 +1,4 @@
 # runninglog
+
+```sudo apt update -```
+
