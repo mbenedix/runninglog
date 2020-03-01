@@ -1,7 +1,14 @@
 const JSRSASign = require("jsrsasign");
+const fs = require('fs');
+
+//retrieves key from docker secret file
+fs.readFile('/run/secrets/jwtkey', (err, data) => { 
+  if (err) throw err; 
+  JWTKEY = data.toString();
+}); 
 
 const generateJWT = (claims) => {
-  const key = process.env.JWTKEY || "AddKeyAsEnvVariablePlease"; 
+  const key = JWTKEY || "AddKeyAsDockerSecretPlease"; 
   const header = {
     alg: "HS512",
     typ: "JWT"
@@ -18,7 +25,7 @@ const validateJWT = (token) => {
   }
   
   const algorithm = "HS512";
-  const key = process.env.JWTKEY || "AddKeyAsEnvVariablePlease"; ; 
+  const key = JWTKEY || "AddKeyAsDockerSecretPlease"; 
 
   return JSRSASign.jws.JWS.verifyJWT(token, key, {
     alg: [algorithm]

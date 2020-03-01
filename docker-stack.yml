@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  front:
+    image: localhost:5000/frontend
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  back:
+    image: localhost:5000/backend
+    ports:
+      - target: 9000
+        published: 9000
+        protocol: tcp
+        mode: host
+    secrets:
+      - mongo_uri
+      - jwtkey
+    deploy:
+      mode: replicated
+      replicas: 1
+
+secrets: 
+  mongo_uri:
+    external: true
+  jwtkey:
+    external: true
