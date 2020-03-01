@@ -72,7 +72,7 @@ I hope that worked. You can view the state of this stack by running
 
 ```docker stack ps runninglog```
 
-You can trace this down to the services and containers created by running the following commands 
+You can trace this down to the services and containers created by running the following commands: 
 
 ```docker service ls```
 
@@ -80,7 +80,7 @@ You can trace this down to the services and containers created by running the fo
 
 ## Use the app
 
-You should now be able to go to http://localhost and view the app. If this is your first time using the app, you will need to create an account and login before being able to do anything interesting. 
+You should now be able to go to http://localhost and view the app. If this is your first time using the app, you will need to create an account and login before you are able to do anything interesting. 
 
 ## Troubleshooting 
 
